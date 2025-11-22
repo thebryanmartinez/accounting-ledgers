@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import {useState} from 'react';
 import { account } from '@/lib/appwrite';
 import { ID } from 'appwrite';
 import type { Models } from 'appwrite';
@@ -9,7 +9,6 @@ import { RegisterUserProps, LoginUserProps } from "@/modules/authentication/mode
 
 export const useAuthentication = () => {
     const [current, setCurrent] = useState<Models.Session | null>(null);
-    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     const register = async ({email, password, name}: RegisterUserProps): Promise<void> => {
@@ -37,24 +36,8 @@ export const useAuthentication = () => {
         router.push('/');
     };
 
-    // const getCurrentUser = async () => {
-    //     try {
-    //         const user = await account.get();
-    //         setCurrent(user);
-    //     } catch (error) {
-    //         setCurrent(null);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     getCurrentUser();
-    // }, []);
-
     return {
         current,
-        loading,
         login,
         logout,
         register,

@@ -1,4 +1,5 @@
 import {useLocalStorage} from '@/modules/shared/hooks'
+import { useTranslations } from 'next-intl'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -21,12 +22,14 @@ interface CompanyDeleteDialogProps {
 }
 
 export const CompanyDeleteDialog = ({
-        isOpen,
-        setIsOpen,
-    deleteMutationCallback,
-        id
-    }: CompanyDeleteDialogProps) => {
-    const queryClient = useQueryClient()
+         isOpen,
+         setIsOpen,
+     deleteMutationCallback,
+         id
+     }: CompanyDeleteDialogProps) => {
+     const t = useTranslations('companies')
+     const ts = useTranslations('shared')
+     const queryClient = useQueryClient()
     const [, setActiveCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, "")
     const [, setActiveCompanyName] = useLocalStorage(ACTIVE_COMPANY_NAME_KEY, "")
 
@@ -52,14 +55,14 @@ export const CompanyDeleteDialog = ({
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Delete company</AlertDialogTitle>
+                    <AlertDialogTitle>{t('deleteCompany')}</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to delete this company?
+                        {t('deleteCompanyConfirmation')}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>Confirm</AlertDialogAction>
+                    <AlertDialogCancel>{ts('cancel')}</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete}>{ts('confirm')}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

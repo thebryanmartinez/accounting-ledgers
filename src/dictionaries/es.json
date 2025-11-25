@@ -1,0 +1,58 @@
+{
+  "authentication": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "loginTitle": "Iniciar sesión",
+    "loginDescription": "Escribe tu correo electrónico y contraseña para acceder a tu cuenta.",
+    "registerTitle": "Registrarse",
+    "registerDescription": "Ingresa la siguiente información para crear una cuenta.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Escribe tu correo electrónico",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Escribe tu contraseña",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Juan Pérez",
+    "loginButton": "Iniciar sesión",
+    "registerButton": "Registrarse",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "invalidEmail": "Dirección de correo electrónico inválida",
+    "passwordRequired": "La contraseña es obligatoria",
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "nameRequired": "El nombre es obligatorio",
+    "nameMinLength": "El nombre debe tener al menos 2 caracteres"
+  },
+  "accounts": {
+  },
+  "companies": {
+    "create": "Crear",
+    "createNewCompany": "Crear una nueva empresa",
+    "createCompanyDescription": "Los diarios y cuentas se crean bajo una empresa. Puedes crear",
+    "edit": "Editar",
+    "editCompany": "Editar empresa",
+    "editCompanyDescription": "Puedes editar el nombre y la descripción de la empresa.",
+    "saveChanges": "Guardar cambios",
+    "delete": "Eliminar",
+    "deleteCompany": "Eliminar empresa",
+    "deleteCompanyConfirmation": "¿Estás seguro de que quieres eliminar esta empresa?",
+    "setAsActive": "Establecer como activa",
+    "isActive": "¡está activa!",
+    "noCompaniesFound": "No se encontraron empresas",
+    "createCompanyToGetStarted": "Crea una nueva empresa para comenzar.",
+    "companyName": "Nombre de la empresa",
+    "companyDescriptionOptional": "Descripción de la empresa (opcional)",
+    "companyNameRequired": "El nombre de la empresa es obligatorio",
+    "companyNameMaxLength": "El nombre de la empresa debe tener como máximo 50 caracteres"
+  },
+  "dashboard": {
+    "companies": "Empresas",
+    "diaries": "Diarios",
+    "accounts": "Cuentas",
+    "language": "Idioma"
+  },
+  "shared": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "title": "Crear aplicación Next",
+    "description": "Generado por create next app"
+  }
+}

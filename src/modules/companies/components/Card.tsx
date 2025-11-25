@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { MoreHorizontal, CircleCheckBig } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import {
     Card,
     CardContent,
@@ -29,13 +30,14 @@ interface CompanyCardProps {
 }
 
 export function CompanyCard({
-                                id,
-                                name = 'company name',
-                                description = 'company description',
-                                onClickSetAsActive,
-                                isActive = false
-                            }: CompanyCardProps) {
-    const queryClient = useQueryClient()
+                                 id,
+                                 name = 'company name',
+                                 description = 'company description',
+                                 onClickSetAsActive,
+                                 isActive = false
+                             }: CompanyCardProps) {
+     const t = useTranslations('companies')
+     const queryClient = useQueryClient()
 
     const activeStyles = isActive ? 'border-2 border-primary' : ''
 
@@ -69,7 +71,7 @@ export function CompanyCard({
                 <CardFooter className='justify-end gap-4'>
                     {isActive ? (
                         <span className='gap-1 items-center flex text-xs'>
-              <CircleCheckBig size={16} /> {name} is active!
+              <CircleCheckBig size={16} /> {name} {t('isActive')}
             </span>
                     ) : (
                         <>
@@ -89,7 +91,7 @@ export function CompanyCard({
                                                     document.body.style.pointerEvents = ''
                                                 }}
                                             >
-                                                Edit
+                                                {t('edit')}
                                             </DropdownMenuItem>
                                         </DialogTrigger>
                                         <DropdownMenuItem
@@ -98,14 +100,14 @@ export function CompanyCard({
                                                 document.body.style.pointerEvents = ''
                                             }}
                                         >
-                                            Delete
+                                            {t('delete')}
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                                 <CompanyDialogForm
-                                    title='Edit company'
-                                    description='You can edit the company name and description.'
-                                    actionButtonText='Save changes'
+                                    title={t('editCompany')}
+                                    description={t('editCompanyDescription')}
+                                    actionButtonText={t('saveChanges')}
                                     setDialogOpen={setIsEditDialogOpen}
                                     onSubmit={onSubmitEdit}
                                     onSubmitMutation={updateCompanyMutation}
@@ -118,7 +120,7 @@ export function CompanyCard({
                                 variant='outline'
                                 onClick={onClickSetAsActive}
                             >
-                                Set as active
+                                {t('setAsActive')}
                             </Button>
                         </>
                     )}

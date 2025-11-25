@@ -2,6 +2,7 @@
 import {zodResolver} from '@hookform/resolvers/zod'
 import {Loader2} from 'lucide-react'
 import {z} from 'zod'
+import {useTranslations} from 'next-intl'
 import {
     Button,
     DialogContent,
@@ -21,19 +22,14 @@ interface CompanyDialogFormProps {
     title: string
     description: string
     actionButtonText?: string
-    onSubmit: (values: z.infer<typeof formSchema>) => void
+    // TODO: Change to have z.infer<typeof formSchema>
+    onSubmit: (values: any) => void
     setDialogOpen?: (open: boolean) => void
     onSubmitMutation: any
     nameDefaultValue?: string
     descriptionDefaultValue?: string
 }
 
-export const formSchema = z.object({
-    name: z.string().min(1, {message: 'Company name is required'}).max(50, {
-        message: 'Company name must be at most 50 characters long'
-    }),
-    description: z.optional(z.string())
-})
 
 export const CompanyDialogForm = ({
                                       title,
@@ -44,6 +40,15 @@ export const CompanyDialogForm = ({
                                       nameDefaultValue = '',
                                       descriptionDefaultValue = ''
                                   }: CompanyDialogFormProps) => {
+    const t = useTranslations('companies')
+
+    const formSchema = z.object({
+        name: z.string().min(1, {message: t('companyNameRequired')}).max(50, {
+            message: t('companyNameMaxLength')
+        }),
+        description: z.optional(z.string())
+    })
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -75,7 +80,7 @@ export const CompanyDialogForm = ({
                         const {ref, ...rest} = field
                         return (
                             <Field>
-                                <FieldLabel>Company name</FieldLabel>
+                                <FieldLabel>{t('companyName')}</FieldLabel>
                                 <Input
                                     placeholder=''
                                     {...rest}
@@ -94,7 +99,7 @@ export const CompanyDialogForm = ({
                         const {ref, ...rest} = field
                         return (
                             <Field>
-                                <FieldLabel>Company&#39;s description (optional)</FieldLabel>
+                                <FieldLabel>{t('companyDescriptionOptional')}</FieldLabel>
                                 <Textarea
                                     placeholder=''
                                     className='resize-none'

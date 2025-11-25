@@ -15,29 +15,32 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import {RegisterUserProps} from "@/modules/authentication/models";
 import {REGISTER_USER_FORM_ID} from "@/modules/authentication/constants";
+import {useRouter} from "next/navigation";
 
 interface RegisterFormProps {
     register: ({email, name, password}: RegisterUserProps) => Promise<void>
 }
 
-const formSchema = z.object({
-    name: z
-        .string()
-        .min(1, { message: 'Name is required' })
-        .min(2, { message: 'Name must be at least 2 characters long' }),
-    email: z
-        .string()
-        .min(1, { message: 'Email is required' })
-        .email({ message: 'Invalid email address' }),
-    password: z
-        .string()
-        .min(1, { message: 'Password is required' })
-        .min(6, { message: 'Password must be at least 6 characters long' })
-})
-
 export const RegisterForm = ({ register }: RegisterFormProps) => {
+    const t = useTranslations('authentication')
+    const router = useRouter()
+
+    const formSchema = z.object({
+        name: z
+            .string()
+            .min(1, { message: t('nameRequired') })
+            .min(2, { message: t('nameMinLength') }),
+        email: z
+            .email({ message: t('invalidEmail') })
+            .min(1, { message: t('emailRequired') }),
+        password: z
+            .string()
+            .min(1, { message: t('passwordRequired') })
+            .min(6, { message: t('passwordMinLength') })
+    })
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -51,8 +54,7 @@ export const RegisterForm = ({ register }: RegisterFormProps) => {
         mutationFn: register,
         mutationKey: ['registerUser'],
         onSuccess: () => {
-            // navigate('/dashboard')
-            console.log("Successful registration")
+            router.push('/dashboard/companies')
         }
     })
 
@@ -63,24 +65,23 @@ export const RegisterForm = ({ register }: RegisterFormProps) => {
     return (
         <Card className='min-h-[375px] justify-between'>
             <CardHeader>
-                <CardTitle>Register</CardTitle>
+                <CardTitle>{t('registerTitle')}</CardTitle>
                 <CardDescription>
-                    Enter the following information to create an account.
+                    {t('registerDescription')}
                 </CardDescription>
             </CardHeader>
             <CardContent className='space-y-2'>
                 <form id={REGISTER_USER_FORM_ID}
                       className='space-y-2'
                       onSubmit={form.handleSubmit(onSubmit)}>
-
                         <Controller
                             control={form.control}
                             name='name'
                             render={({ field, fieldState }) => (
                                 <Field>
-                                    <FieldLabel>Name</FieldLabel>
+                                    <FieldLabel>{t('nameLabel')}</FieldLabel>
                                         <Input
-                                            placeholder='John Doe'
+                                            placeholder={t('namePlaceholder')}
                                             {...field}
                                         />
                                     {fieldState.invalid && (
@@ -94,9 +95,9 @@ export const RegisterForm = ({ register }: RegisterFormProps) => {
                             name='email'
                             render={({ field, fieldState }) => (
                                 <Field>
-                                    <FieldLabel>Email</FieldLabel>
+                                    <FieldLabel>{t('emailLabel')}</FieldLabel>
                                         <Input
-                                            placeholder='john@email.com'
+                                            placeholder={t('emailPlaceholder')}
                                             {...field}
                                         />
                                     {fieldState.invalid && (
@@ -110,9 +111,9 @@ export const RegisterForm = ({ register }: RegisterFormProps) => {
                             name='password'
                             render={({ field, fieldState }) => (
                                 <Field>
-                                    <FieldLabel>Password</FieldLabel>
+                                    <FieldLabel>{t('passwordLabel')}</FieldLabel>
                                         <Input
-                                            placeholder='password123'
+                                            placeholder={t('passwordPlaceholder')}
                                             {...field}
                                         />
                                     {fieldState.invalid && (
@@ -132,7 +133,7 @@ export const RegisterForm = ({ register }: RegisterFormProps) => {
                     {registerUserMutation.isPending && (
                         <Loader2 className='animate-spin' />
                     )}
-                    Register
+                    {t('registerButton')}
                 </Button>
             </CardFooter>
         </Card>

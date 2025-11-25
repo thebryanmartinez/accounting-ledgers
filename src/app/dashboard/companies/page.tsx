@@ -1,7 +1,7 @@
 "use client"
 
 import {useQuery} from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import {
     CompanyCard,
     CreateCompanyDialog,
@@ -15,6 +15,7 @@ import {useLocalStorage} from '@/modules/shared/hooks'
 import {getCompanies} from "@/modules/companies/api";
 
 export default function Companies() {
+    const t = useTranslations('companies')
 
     const {data: companies, isPending} = useQuery({
         queryKey: [COMPANIES_QUERY_KEYS.GET],
@@ -26,19 +27,6 @@ export default function Companies() {
         ''
     )
     const [, setActiveCompanyName] = useLocalStorage(ACTIVE_COMPANY_NAME_KEY, '')
-
-    useEffect(() => {
-        const logDimensions = () => {
-            console.log('Window width:', window.innerWidth)
-            const container = document.querySelector('main > div')
-            if (container) {
-                console.log('Container width:', container.clientWidth)
-            }
-        }
-        logDimensions()
-        window.addEventListener('resize', logDimensions)
-        return () => window.removeEventListener('resize', logDimensions)
-    }, [])
 
     return (
         <section className="h-full">
@@ -53,9 +41,9 @@ export default function Companies() {
                 </article>
             ) : companies?.total === 0 ? (
                 <div className='flex h-full col-span-full w-full flex-col items-center justify-center'>
-                    <h2 className='text-2xl font-bold'>No companies found</h2>
+                    <h2 className='text-2xl font-bold'>{t('noCompaniesFound')}</h2>
                     <p className='text-muted'>
-                        Create a new company to get started.
+                        {t('createCompanyToGetStarted')}
                     </p>
                 </div>
             ) : (

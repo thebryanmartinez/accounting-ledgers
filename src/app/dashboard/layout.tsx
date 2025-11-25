@@ -12,9 +12,11 @@ export default function Layout({children}: { children: ReactNode }) {
         <QueryClientProvider client={queryClient}>
             <SidebarProvider>
                 <DashboardSidebar/>
-                <main className='flex-1 px-8 py-4 h-full'>
+                <main className='flex-1 h-full'>
                     <SidebarTrigger/>
+                    <div className="px-8 py-4 h-full">
                     {children}
+                    </div>
                 </main>
             </SidebarProvider>
         </QueryClientProvider>

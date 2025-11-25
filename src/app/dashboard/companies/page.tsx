@@ -1,6 +1,7 @@
 "use client"
 
 import {useQuery} from '@tanstack/react-query'
+import { useEffect } from 'react'
 import {
     CompanyCard,
     CreateCompanyDialog,
@@ -26,25 +27,40 @@ export default function Companies() {
     )
     const [, setActiveCompanyName] = useLocalStorage(ACTIVE_COMPANY_NAME_KEY, '')
 
+    useEffect(() => {
+        const logDimensions = () => {
+            console.log('Window width:', window.innerWidth)
+            const container = document.querySelector('main > div')
+            if (container) {
+                console.log('Container width:', container.clientWidth)
+            }
+        }
+        logDimensions()
+        window.addEventListener('resize', logDimensions)
+        return () => window.removeEventListener('resize', logDimensions)
+    }, [])
+
     return (
-        <div>
-            <div className='pb-4'>
+        <section className="h-full">
+            <article className='pb-4'>
                 <CreateCompanyDialog/>
-            </div>
+            </article>
+
             {isPending ? (
-                <>
+                <article className="grid lg:grid-cols-2 grid-cols-1 2xl:grid-cols-3 gap-4">
                     <SkeletonCard/>
                     <SkeletonCard/>
-                </>
+                </article>
             ) : companies?.total === 0 ? (
                 <div className='flex h-full col-span-full w-full flex-col items-center justify-center'>
                     <h2 className='text-2xl font-bold'>No companies found</h2>
-                    <p className='text-gray-500'>
+                    <p className='text-muted'>
                         Create a new company to get started.
                     </p>
                 </div>
             ) : (
-                companies?.rows.map((company) => (
+                <article className="grid lg:grid-cols-2 grid-cols-1 2xl:grid-cols-3 gap-4">
+                    {companies?.rows.map((company) => (
                     <CompanyCard
                         key={company.$id}
                         id={company.$id}
@@ -56,8 +72,9 @@ export default function Companies() {
                             setActiveCompanyName(company.name)
                         }}
                     />
-                ))
+                ))}
+                </article>
             )}
-    </div>
+    </section>
     )
 }

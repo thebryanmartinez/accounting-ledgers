@@ -60,7 +60,7 @@ export function CompanyCard({
 
     return (
         <>
-            <Card className={`w-[350px] h-[170px] ${activeStyles}`}>
+            <Card className={`w-full md:min-w-[350px] h-[170px] ${activeStyles}`}>
                 <CardHeader>
                     <CardTitle>{name}</CardTitle>
                     <CardDescription className='h-[1rem]'>{description}</CardDescription>

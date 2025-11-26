@@ -3,4 +3,4 @@ export const COMPANIES_QUERY_KEYS = {
     POST: 'create-company',
     UPDATE: 'update-company',
     DELETE: 'delete-company',
-}
+};

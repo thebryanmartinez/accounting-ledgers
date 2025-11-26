@@ -1,1 +1,1 @@
-export * from './companies.api'
+export * from './companies.api';

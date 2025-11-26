@@ -1,50 +1,64 @@
-"use client"
+'use client';
 
-import Link from "next/link";
-import {useMemo} from "react";
-import {BookOpen, Building2, Database} from "lucide-react";
-import {useTranslations} from "next-intl";
+import { useMemo } from 'react';
+
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+
+import { BookOpen, Building2, Database } from 'lucide-react';
+
+import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
+import { ThemeToggle } from '@/modules/shared/components';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/modules/shared/components/select';
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
-    SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
-    SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
-} from "@/modules/shared/components/sidebar"
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/modules/shared/components/select"
-import {ACTIVE_COMPANY_ID_KEY} from "@/modules/companies/constants";
-import {useLocalStorage} from "@/modules/shared/hooks";
-import {ThemeToggle} from "@/modules/shared/components";
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from '@/modules/shared/components/sidebar';
+import { useLocalStorage } from '@/modules/shared/hooks';
 
 export function DashboardSidebar() {
-    const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, "")
-    const [locale, setLocale] = useLocalStorage('locale', 'es')
-    const t = useTranslations()
+    const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+    const [locale, setLocale] = useLocalStorage('locale', 'es');
+    const t = useTranslations();
 
     const items = useMemo(
         () => [
             {
                 title: t('dashboard.companies'),
                 url: '/dashboard/companies',
-                icon: Building2
+                icon: Building2,
             },
             {
                 title: t('dashboard.diaries'),
                 url: `/dashboard/${activeCompanyId}/diaries`,
-                icon: BookOpen
+                icon: BookOpen,
             },
             {
                 title: t('dashboard.accounts'),
                 url: `/dashboard/${activeCompanyId}/accounts`,
-                icon: Database
-            }
+                icon: Database,
+            },
         ],
         [activeCompanyId, t]
-    )
+    );
 
     return (
         <Sidebar>
-            <SidebarHeader/>
+            <SidebarHeader />
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -54,7 +68,7 @@ export function DashboardSidebar() {
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
                                         <Link href={item.url}>
-                                            <item.icon/>
+                                            <item.icon />
                                             <span>{item.title}</span>
                                         </Link>
                                     </SidebarMenuButton>
@@ -67,23 +81,26 @@ export function DashboardSidebar() {
             <SidebarFooter>
                 <SidebarGroup>
                     <SidebarGroupLabel>{t('dashboard.language')}</SidebarGroupLabel>
-                    <SidebarGroupContent className="flex flex-row gap-4">
-                        <Select value={locale} onValueChange={(value) => {
-                            setLocale(value);
-                            document.cookie = `locale=${value}; path=/; max-age=31536000`;
-                        }}>
-                            <SelectTrigger className="w-full">
-                                <SelectValue/>
+                    <SidebarGroupContent className='flex flex-row gap-4'>
+                        <Select
+                            value={locale}
+                            onValueChange={(value) => {
+                                setLocale(value);
+                                document.cookie = `locale=${value}; path=/; max-age=31536000`;
+                            }}
+                        >
+                            <SelectTrigger className='w-full'>
+                                <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="en">English</SelectItem>
-                                <SelectItem value="es">Español</SelectItem>
+                                <SelectItem value='en'>English</SelectItem>
+                                <SelectItem value='es'>Español</SelectItem>
                             </SelectContent>
                         </Select>
-                        <ThemeToggle/>
+                        <ThemeToggle />
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarFooter>
         </Sidebar>
-    )
+    );
 }

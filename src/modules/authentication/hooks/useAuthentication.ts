@@ -1,30 +1,33 @@
-"use client"
+'use client';
 
-import {useState} from 'react';
-import { account } from '@/lib/appwrite';
+import { useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+
 import { ID } from 'appwrite';
 import type { Models } from 'appwrite';
-import { useRouter } from 'next/navigation';
-import { RegisterUserProps, LoginUserProps } from "@/modules/authentication/models";
+
+import { account } from '@/lib/appwrite';
+import { LoginUserProps, RegisterUserProps } from '@/modules/authentication/models';
 
 export const useAuthentication = () => {
     const [current, setCurrent] = useState<Models.Session | null>(null);
     const router = useRouter();
 
-    const register = async ({email, password, name}: RegisterUserProps): Promise<void> => {
+    const register = async ({ email, password, name }: RegisterUserProps): Promise<void> => {
         await account.create({
             userId: ID.unique(),
             name,
             email,
-            password
+            password,
         });
-        await login({email, password});
+        await login({ email, password });
     };
 
-    const login = async ({email, password}: LoginUserProps): Promise<void> => {
+    const login = async ({ email, password }: LoginUserProps): Promise<void> => {
         const session = await account.createEmailPasswordSession({
             email,
-            password
+            password,
         });
         setCurrent(session);
         router.push('/');
@@ -42,4 +45,4 @@ export const useAuthentication = () => {
         logout,
         register,
     };
-}
+};

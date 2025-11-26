@@ -21,8 +21,7 @@
     "nameRequired": "El nombre es obligatorio",
     "nameMinLength": "El nombre debe tener al menos 2 caracteres"
   },
-  "accounts": {
-  },
+  "accounts": {},
   "companies": {
     "create": "Crear",
     "createNewCompany": "Crear una nueva empresa",

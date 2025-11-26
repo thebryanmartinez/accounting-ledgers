@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { createAccount } from '@/modules/accounts/api';
-import { AccountFormDialog, formSchema } from '@/modules/accounts/components';
+import { AccountFormDialog, FormSchema } from '@/modules/accounts/components';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
 import { AccountType } from '@/modules/accounts/models';
 import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
@@ -16,6 +17,7 @@ import { Button, Dialog, DialogTrigger } from '@/modules/shared/components';
 import { useLocalStorage } from '@/modules/shared/hooks';
 
 export const CreateAccountDialog = () => {
+    const t = useTranslations('accounts');
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
     const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
@@ -26,16 +28,16 @@ export const CreateAccountDialog = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [ACCOUNTS_QUERY_KEYS.GET] });
             setOpen(false);
-            toast.success('Account has been created successfully');
+            toast.success(t('accountCreatedSuccess'));
         },
         onError: (error) => {
-            toast.error('There was an error creating the account', {
+            toast.error(t('accountCreateError'), {
                 description: error.message,
             });
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: FormSchema) => {
         await createAccountMutation.mutateAsync({
             company_id: activeCompanyId,
             ...values,
@@ -44,15 +46,15 @@ export const CreateAccountDialog = () => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 <Button>
                     <Plus />
-                    Create
+                    {t('create')}
                 </Button>
             </DialogTrigger>
             <AccountFormDialog
-                title='Create a new account'
-                description='Accounts will help diaries be more organized'
+                title={t('createNewAccount')}
+                description={t('createAccountDescription')}
                 onSubmit={onSubmit}
                 onSubmitMutation={createAccountMutation}
                 defaultValues={{
@@ -61,7 +63,7 @@ export const CreateAccountDialog = () => {
                     initial_value: 0,
                     type: AccountType.Active,
                 }}
-                actionButtonText='Create account'
+                actionButtonText={t('createAccount')}
             />
         </Dialog>
     );

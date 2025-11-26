@@ -14,6 +14,7 @@ import {
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/modules/shared/components/select"
 import {ACTIVE_COMPANY_ID_KEY} from "@/modules/companies/constants";
 import {useLocalStorage} from "@/modules/shared/hooks";
+import {ThemeToggle} from "@/modules/shared/components";
 
 export function DashboardSidebar() {
     const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, "")
@@ -66,7 +67,7 @@ export function DashboardSidebar() {
             <SidebarFooter>
                 <SidebarGroup>
                     <SidebarGroupLabel>{t('dashboard.language')}</SidebarGroupLabel>
-                    <SidebarGroupContent>
+                    <SidebarGroupContent className="flex flex-row gap-4">
                         <Select value={locale} onValueChange={(value) => {
                             setLocale(value);
                             document.cookie = `locale=${value}; path=/; max-age=31536000`;
@@ -79,6 +80,7 @@ export function DashboardSidebar() {
                                 <SelectItem value="es">Español</SelectItem>
                             </SelectContent>
                         </Select>
+                        <ThemeToggle/>
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarFooter>

@@ -1,6 +1,11 @@
-import { Client, ID, TablesDB } from 'appwrite';
+import { Client, ID, Query, TablesDB } from 'appwrite';
 
-import { AccountType } from '@/modules/accounts/models';
+import {
+    Account,
+    AccountType,
+    GetAccountsParams,
+    PaginatedAccountsResponse,
+} from '@/modules/accounts/models';
 
 interface CreateAccountProps {
     company_id: string;
@@ -9,6 +14,11 @@ interface CreateAccountProps {
     type?: AccountType;
     parent_id?: string;
     id: string;
+}
+
+interface UpdateAccountProps {
+    name?: string;
+    type?: AccountType;
 }
 
 const client = new Client()
@@ -42,5 +52,97 @@ export const getAccounts = async () => {
         });
     } catch (error) {
         console.error(error);
+    }
+};
+
+export const getAccountsPaginated = async ({
+    company_id,
+    limit = 10,
+    offset = 0,
+}: GetAccountsParams): Promise<PaginatedAccountsResponse> => {
+    try {
+        const response = await tablesDB.listRows({
+            ...tableProperties,
+            queries: [
+                Query.equal('company_id', company_id),
+                Query.limit(limit),
+                Query.offset(offset),
+                Query.orderDesc('$createdAt'),
+            ],
+        });
+
+        return {
+            rows: response.rows as Account[],
+            total: response.total,
+        };
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const getAccountById = async (id: string): Promise<Account> => {
+    try {
+        const response = await tablesDB.getRow({
+            ...tableProperties,
+            rowId: id,
+        });
+
+        return response as Account;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const updateAccount = async (id: string, data: UpdateAccountProps): Promise<Account> => {
+    try {
+        const response = await tablesDB.updateRow({
+            ...tableProperties,
+            rowId: id,
+            data,
+        });
+
+        return response as Account;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const updateAccountValue = async (
+    id: string,
+    value: number,
+    currentValue: number,
+    accountType: AccountType
+): Promise<Account> => {
+    try {
+        const newValue =
+            accountType === AccountType.Active ? currentValue + value : currentValue - value;
+
+        const response = await tablesDB.updateRow({
+            ...tableProperties,
+            rowId: id,
+            data: {
+                initial_value: newValue,
+            },
+        });
+
+        return response as Account;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const deleteAccount = async (id: string): Promise<void> => {
+    try {
+        await tablesDB.deleteRow({
+            ...tableProperties,
+            rowId: id,
+        });
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 };

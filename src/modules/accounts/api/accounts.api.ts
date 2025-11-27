@@ -45,56 +45,6 @@ export const createAccount = async (values: CreateAccountProps) => {
     }
 };
 
-export const getAccounts = async () => {
-    try {
-        return await tablesDB.listRows({
-            ...tableProperties,
-        });
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-export const getAccountsPaginated = async ({
-    company_id,
-    limit = 10,
-    offset = 0,
-}: GetAccountsParams): Promise<PaginatedAccountsResponse> => {
-    try {
-        const response = await tablesDB.listRows({
-            ...tableProperties,
-            queries: [
-                Query.equal('company_id', company_id),
-                Query.limit(limit),
-                Query.offset(offset),
-                Query.orderDesc('$createdAt'),
-            ],
-        });
-
-        return {
-            rows: response.rows as Account[],
-            total: response.total,
-        };
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-export const getAccountById = async (id: string): Promise<Account> => {
-    try {
-        const response = await tablesDB.getRow({
-            ...tableProperties,
-            rowId: id,
-        });
-
-        return response as Account;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
 export const updateAccount = async (id: string, data: UpdateAccountProps): Promise<Account> => {
     try {
         const response = await tablesDB.updateRow({
@@ -137,10 +87,56 @@ export const updateAccountValue = async (
 
 export const deleteAccount = async (id: string): Promise<void> => {
     try {
+        // First, find all child accounts (subaccounts)
+        const childrenResponse = await tablesDB.listRows({
+            ...tableProperties,
+            queries: [Query.equal('parent_id', id)],
+        });
+
+        // Delete all child accounts recursively
+        if (childrenResponse.rows && childrenResponse.rows.length > 0) {
+            for (const child of childrenResponse.rows as Account[]) {
+                await deleteAccount(child.id);
+            }
+        }
+
+        // Then delete the parent account
         await tablesDB.deleteRow({
             ...tableProperties,
             rowId: id,
         });
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const getParentAccounts = async (company_id: string): Promise<Account[]> => {
+    try {
+        const response = await tablesDB.listRows({
+            ...tableProperties,
+            queries: [
+                Query.equal('company_id', company_id),
+                Query.isNull('parent_id'),
+                Query.orderAsc('id'),
+            ],
+        });
+
+        return response.rows as Account[];
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const getAllAccountsForHierarchy = async (company_id: string): Promise<Account[]> => {
+    try {
+        const response = await tablesDB.listRows({
+            ...tableProperties,
+            queries: [Query.equal('company_id', company_id), Query.orderAsc('id')],
+        });
+
+        return response.rows as Account[];
     } catch (error) {
         console.error(error);
         throw error;

@@ -13,7 +13,7 @@ import {
     ACCOUNT_CREATE_FORM_ID,
     ACCOUNT_IS_SUBACCOUNT_CHECKBOX_ID,
 } from '@/modules/accounts/constants';
-import { AccountType } from '@/modules/accounts/models';
+import { Account, AccountType } from '@/modules/accounts/models';
 import {
     Button,
     Checkbox,
@@ -40,6 +40,7 @@ interface AccountDialogForm {
     onSubmit: (values: FormSchema) => void;
     onSubmitMutation: any;
     defaultValues: AccountDialogDefaultValues;
+    parentAccounts?: Account[];
 }
 
 interface AccountDialogDefaultValues {
@@ -81,9 +82,10 @@ export const AccountFormDialog = ({
     onSubmit,
     onSubmitMutation,
     defaultValues,
+    parentAccounts = [],
 }: AccountDialogForm) => {
     const t = useTranslations('accounts');
-    const [isSubaccount, setIsSubaccount] = useState(false);
+    const [isSubaccount, setIsSubaccount] = useState(!!defaultValues.parent_id);
 
     const formSchema = createFormSchema(t);
 
@@ -209,18 +211,23 @@ export const AccountFormDialog = ({
                                         <FieldLabel>{t('parentAccountLabel')}</FieldLabel>
                                         <Select
                                             onValueChange={field.onChange}
-                                            defaultValue={field.value}
+                                            value={field.value}
                                         >
                                             <SelectTrigger className='w-full'>
                                                 <SelectValue placeholder={t('selectParentPlaceholder')} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value={AccountType.Active}>
-                                                    {t('active')}
-                                                </SelectItem>
-                                                <SelectItem value={AccountType.Passive}>
-                                                    {t('passive')}
-                                                </SelectItem>
+                                                {parentAccounts.length === 0 ? (
+                                                    <div className='px-2 py-1.5 text-sm text-muted-foreground'>
+                                                        {t('noParentAccountsAvailable')}
+                                                    </div>
+                                                ) : (
+                                                    parentAccounts.map((account) => (
+                                                        <SelectItem key={account.$id} value={account.id}>
+                                                            {account.id} - {account.name}
+                                                        </SelectItem>
+                                                    ))
+                                                )}
                                             </SelectContent>
                                         </Select>
                                         {fieldState.invalid && (

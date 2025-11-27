@@ -1,13 +1,16 @@
-import { AccountHeader, AccountsTable, CreateAccountDialog } from '@/modules/accounts/components';
-import { SlugPagesProps } from '@/modules/shared/models';
+import { getTranslations } from 'next-intl/server';
 
-export default async function AccountsPage({ params }: SlugPagesProps) {
+import { AccountsTable, CreateAccountDialog } from '@/modules/accounts/components';
+import { PageHeader } from '@/modules/shared/components';
+
+export default async function AccountsPage() {
+    const t = await getTranslations('accounts');
+
     return (
         <section className='space-y-6'>
-            <div className='flex items-center justify-between'>
-                <AccountHeader />
+            <PageHeader title={t('accountsTitle')} description={t('accountsDescription')}>
                 <CreateAccountDialog />
-            </div>
+            </PageHeader>
             <AccountsTable />
         </section>
     );

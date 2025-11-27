@@ -14,6 +14,7 @@ import {
 } from "@/modules/companies/constants";
 import { useLocalStorage } from "@/modules/shared/hooks";
 import { getCompanies } from "@/modules/companies/api";
+import { PageHeader } from "@/modules/shared/components";
 
 export default function Companies() {
   const t = useTranslations("companies");
@@ -30,10 +31,10 @@ export default function Companies() {
   const [, setActiveCompanyName] = useLocalStorage(ACTIVE_COMPANY_NAME_KEY, "");
 
   return (
-    <section className="h-full">
-      <article className="pb-4">
+    <section className="space-y-6">
+      <PageHeader title={t("companiesTitle")} description={t("companiesDescription")}>
         <CreateCompanyDialog />
-      </article>
+      </PageHeader>
 
       {isPending ? (
         <article className="grid lg:grid-cols-2 grid-cols-1 2xl:grid-cols-3 gap-4">

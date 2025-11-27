@@ -40,6 +40,7 @@
     "isSubaccount": "Esta cuenta es una subcuenta?",
     "parentAccountLabel": "Cuenta padre",
     "selectParentPlaceholder": "Seleccionar cuenta padre",
+    "noParentAccountsAvailable": "No hay cuentas padre disponibles. Crea una cuenta regular primero.",
     "create": "Crear",
     "createNewAccount": "Crear una nueva cuenta",
     "createAccountDescription": "Las cuentas ayudarán a que los diarios estén más organizados",
@@ -56,6 +57,7 @@
     "editAccountDescription": "Actualiza el nombre o tipo de la cuenta.",
     "deleteAccount": "Eliminar Cuenta",
     "deleteAccountConfirmation": "¿Estás seguro de que quieres eliminar esta cuenta? Esta acción no se puede deshacer.",
+    "deleteAccountWillDeleteChildren": "Esta acción también eliminará todas las subcuentas asociadas a esta cuenta.",
     "addValueTitle": "Agregar Valor",
     "addValueDescription": "Ingresa el monto a agregar a esta cuenta.",
     "valueLabel": "Monto",
@@ -76,11 +78,14 @@
     "tableHeaderBalance": "Saldo",
     "tableHeaderActions": "Acciones",
     "idCannotBeChanged": "El ID de cuenta no puede ser modificado después de la creación.",
+    "parentIdCannotBeChanged": "La relación de cuenta padre no puede ser modificada después de la creación.",
     "saveChanges": "Guardar cambios",
     "accountsTitle": "Cuentas",
-    "manageYourAccounts": "Administra tus cuentas y realiza un seguimiento de los saldos"
+    "accountsDescription": "Administra tus cuentas y realiza un seguimiento de los saldos"
   },
   "companies": {
+    "companiesTitle": "Empresas",
+    "companiesDescription": "Administra tus empresas y cambia entre ellas",
     "create": "Crear",
     "createNewCompany": "Crear una nueva empresa",
     "createCompanyDescription": "Los diarios y cuentas se crean bajo una empresa. Puedes crear",

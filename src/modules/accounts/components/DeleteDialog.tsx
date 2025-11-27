@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { deleteAccount } from '@/modules/accounts/api';
@@ -24,6 +24,7 @@ interface DeleteAccountDialogProps {
     setIsOpen: (isOpen: boolean) => void;
     accountId: string;
     accountName: string;
+    hasChildren?: boolean;
 }
 
 export const DeleteAccountDialog = ({
@@ -31,6 +32,7 @@ export const DeleteAccountDialog = ({
     setIsOpen,
     accountId,
     accountName,
+    hasChildren = false,
 }: DeleteAccountDialogProps) => {
     const t = useTranslations('accounts');
     const ts = useTranslations('shared');
@@ -63,6 +65,12 @@ export const DeleteAccountDialog = ({
                     <AlertDialogDescription>
                         {t('deleteAccountConfirmation', { name: accountName })}
                     </AlertDialogDescription>
+                    {hasChildren && (
+                        <div className='mt-3 flex items-start gap-2 rounded-md bg-amber-50 p-3 text-amber-900 dark:bg-amber-950/20 dark:text-amber-200'>
+                            <AlertTriangle className='h-5 w-5 flex-shrink-0 mt-0.5' />
+                            <p className='text-sm'>{t('deleteAccountWillDeleteChildren')}</p>
+                        </div>
+                    )}
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel disabled={deleteAccountMutation.isPending}>

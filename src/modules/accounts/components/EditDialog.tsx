@@ -96,6 +96,13 @@ export const EditAccountDialog = ({ isOpen, setIsOpen, account }: EditAccountDia
                         <Input value={account.id} disabled className='bg-muted' />
                         <p className='text-xs text-muted-foreground'>{t('idCannotBeChanged')}</p>
                     </Field>
+                    {account.parent_id && (
+                        <Field>
+                            <FieldLabel>{t('parentAccountLabel')}</FieldLabel>
+                            <Input value={account.parent_id} disabled className='bg-muted' />
+                            <p className='text-xs text-muted-foreground'>{t('parentIdCannotBeChanged')}</p>
+                        </Field>
+                    )}
                     <Controller
                         control={form.control}
                         name='name'

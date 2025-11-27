@@ -40,6 +40,7 @@
     "isSubaccount": "Is this account a subaccount?",
     "parentAccountLabel": "Parent account",
     "selectParentPlaceholder": "Select parent account",
+    "noParentAccountsAvailable": "No parent accounts available. Create a regular account first.",
     "create": "Create",
     "createNewAccount": "Create a new account",
     "createAccountDescription": "Accounts will help diaries be more organized",
@@ -56,6 +57,7 @@
     "editAccountDescription": "Update the account name or type.",
     "deleteAccount": "Delete Account",
     "deleteAccountConfirmation": "Are you sure you want to delete this account? This action cannot be undone.",
+    "deleteAccountWillDeleteChildren": "This action will also delete all subaccounts associated with this account.",
     "addValueTitle": "Add Value",
     "addValueDescription": "Enter the amount to add to this account.",
     "valueLabel": "Amount",
@@ -76,11 +78,14 @@
     "tableHeaderBalance": "Balance",
     "tableHeaderActions": "Actions",
     "idCannotBeChanged": "Account ID cannot be changed after creation.",
+    "parentIdCannotBeChanged": "Parent account relationship cannot be changed after creation.",
     "saveChanges": "Save changes",
     "accountsTitle": "Accounts",
-    "manageYourAccounts": "Manage your accounts and track balances"
+    "accountsDescription": "Manage your accounts and track balances"
   },
   "companies": {
+    "companiesTitle": "Companies",
+    "companiesDescription": "Manage your companies and switch between them",
     "create": "Create",
     "createNewCompany": "Create a new company",
     "createCompanyDescription": "Diaries and accounts are created under a company. You can create multiple companies and switch between them.",

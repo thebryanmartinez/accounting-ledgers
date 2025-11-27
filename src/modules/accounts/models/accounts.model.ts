@@ -15,6 +15,12 @@ export interface Account {
     parent_id?: string;
 }
 
+export interface HierarchicalAccount extends Account {
+    children: Account[];
+    level: number;
+    isLastChild: boolean;
+}
+
 export interface PaginatedAccountsResponse {
     rows: Account[];
     total: number;

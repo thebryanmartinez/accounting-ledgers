@@ -20,3 +20,4 @@ export * from './textarea';
 export * from './tooltip';
 export * from './theme-provider';
 export * from './ThemeToggle';
+export * from './PageHeader';

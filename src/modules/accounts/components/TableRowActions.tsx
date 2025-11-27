@@ -7,8 +7,8 @@ import { useTranslations } from 'next-intl';
 import { MoreHorizontal, Pencil, PlusCircle, Trash2 } from 'lucide-react';
 
 import { AddValueDialog } from '@/modules/accounts/components/AddValueDialog';
-import { DeleteAccountDialog } from '@/modules/accounts/components/DeleteAccountDialog';
-import { EditAccountDialog } from '@/modules/accounts/components/EditAccountDialog';
+import { DeleteAccountDialog } from '@/modules/accounts/components/DeleteDialog';
+import { EditAccountDialog } from '@/modules/accounts/components/EditDialog';
 import { Account } from '@/modules/accounts/models';
 import {
     Button,
@@ -21,9 +21,10 @@ import {
 
 interface AccountRowActionsProps {
     account: Account;
+    hasChildren?: boolean;
 }
 
-export const AccountRowActions = ({ account }: AccountRowActionsProps) => {
+export const AccountRowActions = ({ account, hasChildren = false }: AccountRowActionsProps) => {
     const t = useTranslations('accounts');
     const [isAddValueOpen, setIsAddValueOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
@@ -48,10 +49,7 @@ export const AccountRowActions = ({ account }: AccountRowActionsProps) => {
                         {t('edit')}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                        onClick={() => setIsDeleteOpen(true)}
-                        variant='destructive'
-                    >
+                    <DropdownMenuItem onClick={() => setIsDeleteOpen(true)} variant='destructive'>
                         <Trash2 className='mr-2 h-4 w-4' />
                         {t('delete')}
                     </DropdownMenuItem>
@@ -64,17 +62,14 @@ export const AccountRowActions = ({ account }: AccountRowActionsProps) => {
                 account={account}
             />
 
-            <EditAccountDialog
-                isOpen={isEditOpen}
-                setIsOpen={setIsEditOpen}
-                account={account}
-            />
+            <EditAccountDialog isOpen={isEditOpen} setIsOpen={setIsEditOpen} account={account} />
 
             <DeleteAccountDialog
                 isOpen={isDeleteOpen}
                 setIsOpen={setIsDeleteOpen}
                 accountId={account.$id}
                 accountName={account.name}
+                hasChildren={hasChildren}
             />
         </>
     );

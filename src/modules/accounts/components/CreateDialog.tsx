@@ -4,11 +4,11 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { createAccount } from '@/modules/accounts/api';
+import { createAccount, getParentAccounts } from '@/modules/accounts/api';
 import { AccountFormDialog, FormSchema } from '@/modules/accounts/components';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
 import { AccountType } from '@/modules/accounts/models';
@@ -21,6 +21,12 @@ export const CreateAccountDialog = () => {
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
     const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+
+    const { data: parentAccounts = [] } = useQuery({
+        queryKey: [ACCOUNTS_QUERY_KEYS.GET, 'parents', activeCompanyId],
+        queryFn: () => getParentAccounts(activeCompanyId),
+        enabled: open && !!activeCompanyId,
+    });
 
     const createAccountMutation = useMutation({
         mutationFn: createAccount,
@@ -64,6 +70,7 @@ export const CreateAccountDialog = () => {
                     type: AccountType.Active,
                 }}
                 actionButtonText={t('createAccount')}
+                parentAccounts={parentAccounts}
             />
         </Dialog>
     );

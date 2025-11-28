@@ -20,14 +20,3 @@ export interface HierarchicalAccount extends Account {
     level: number;
     isLastChild: boolean;
 }
-
-export interface PaginatedAccountsResponse {
-    rows: Account[];
-    total: number;
-}
-
-export interface GetAccountsParams {
-    company_id: string;
-    limit?: number;
-    offset?: number;
-}

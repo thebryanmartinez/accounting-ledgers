@@ -1,11 +1,6 @@
 import { Client, ID, Query, TablesDB } from 'appwrite';
 
-import {
-    Account,
-    AccountType,
-    GetAccountsParams,
-    PaginatedAccountsResponse,
-} from '@/modules/accounts/models';
+import { Account, AccountType } from '@/modules/accounts/models';
 
 interface CreateAccountProps {
     company_id: string;

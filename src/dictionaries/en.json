@@ -43,7 +43,7 @@
     "noParentAccountsAvailable": "No parent accounts available. Create a regular account first.",
     "create": "Create",
     "createNewAccount": "Create a new account",
-    "createAccountDescription": "Accounts will help diaries be more organized",
+    "createAccountDescription": "Accounts will help ledgers be more organized",
     "createAccount": "Create account",
     "accountCreatedSuccess": "Account has been created successfully",
     "accountCreateError": "There was an error creating the account",
@@ -88,7 +88,7 @@
     "companiesDescription": "Manage your companies and switch between them",
     "create": "Create",
     "createNewCompany": "Create a new company",
-    "createCompanyDescription": "Diaries and accounts are created under a company. You can create multiple companies and switch between them.",
+    "createCompanyDescription": "Ledgers and accounts are created under a company. You can create multiple companies and switch between them.",
     "edit": "Edit",
     "editCompany": "Edit company",
     "editCompanyDescription": "You can edit the company name and description.",
@@ -105,11 +105,20 @@
     "companyNameRequired": "Company name is required",
     "companyNameMaxLength": "Company name must be at most 50 characters long"
   },
+  "ledgers": {
+
+  },
   "dashboard": {
     "companies": "Companies",
+    "ledgers": "Ledgers",
     "diaries": "Diaries",
     "accounts": "Accounts",
-    "language": "Language"
+    "language": "Language",
+    "general": "General",
+    "entries": "Entries",
+    "accounting": "Accounting",
+    "generalJournal": "General journal",
+    "generalLedger": "General ledger"
   },
   "shared": {
     "cancel": "Cancel",

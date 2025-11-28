@@ -32,6 +32,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/modules/shared/components';
+import {
+    GARBAGE_COLLECTION_TIME_INTERVAL,
+    REFETCH_ON_MOUNT_BOOLEAN,
+    REFETCH_ON_WINDOW_FOCUS_BOOLEAN,
+    STALE_TIME_INTERVAL,
+} from '@/modules/shared/constants';
 import { useLocalStorage } from '@/modules/shared/hooks';
 
 const ITEMS_PER_PAGE = 10;
@@ -53,6 +59,10 @@ export const AccountsTable = () => {
         queryKey: [ACCOUNTS_QUERY_KEYS.GET, activeCompanyId],
         queryFn: () => getAllAccountsForHierarchy(activeCompanyId),
         enabled: !!activeCompanyId,
+        staleTime: STALE_TIME_INTERVAL,
+        gcTime: GARBAGE_COLLECTION_TIME_INTERVAL,
+        refetchOnWindowFocus: REFETCH_ON_WINDOW_FOCUS_BOOLEAN,
+        refetchOnMount: REFETCH_ON_MOUNT_BOOLEAN,
     });
 
     const { paginatedAccounts, totalGroups } = useMemo(() => {

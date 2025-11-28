@@ -1,0 +1,4 @@
+export const STALE_TIME_INTERVAL = 10 * 60 * 1000; // 10 minutes
+export const GARBAGE_COLLECTION_TIME_INTERVAL = 30 * 60 * 1000;
+export const REFETCH_ON_WINDOW_FOCUS_BOOLEAN = false;
+export const REFETCH_ON_MOUNT_BOOLEAN = false;

@@ -21,3 +21,5 @@ export * from './tooltip';
 export * from './theme-provider';
 export * from './ThemeToggle';
 export * from './PageHeader';
+export * from './collapsible';
+export * from './CompanyIdSync';

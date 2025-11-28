@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { cookies } from 'next/headers';
@@ -48,7 +47,7 @@ export default async function RootLayout({
                     disableTransitionOnChange
                 >
                     <LocaleProvider>
-                        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+                        {children}
                     </LocaleProvider>
                     <Toaster />
                 </ThemeProvider>

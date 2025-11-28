@@ -43,7 +43,7 @@
     "noParentAccountsAvailable": "No hay cuentas padre disponibles. Crea una cuenta regular primero.",
     "create": "Crear",
     "createNewAccount": "Crear una nueva cuenta",
-    "createAccountDescription": "Las cuentas ayudarán a que los diarios estén más organizados",
+    "createAccountDescription": "Las cuentas ayudarán a que los libros estén más organizados",
     "createAccount": "Crear cuenta",
     "accountCreatedSuccess": "La cuenta ha sido creada exitosamente",
     "accountCreateError": "Hubo un error creando la cuenta",
@@ -88,7 +88,7 @@
     "companiesDescription": "Administra tus empresas y cambia entre ellas",
     "create": "Crear",
     "createNewCompany": "Crear una nueva empresa",
-    "createCompanyDescription": "Los diarios y cuentas se crean bajo una empresa. Puedes crear",
+    "createCompanyDescription": "Los libros y cuentas se crean bajo una empresa. Puedes crear",
     "edit": "Editar",
     "editCompany": "Editar empresa",
     "editCompanyDescription": "Puedes editar el nombre y la descripción de la empresa.",
@@ -107,9 +107,15 @@
   },
   "dashboard": {
     "companies": "Empresas",
+    "ledgers": "Libros",
     "diaries": "Diarios",
     "accounts": "Cuentas",
-    "language": "Idioma"
+    "language": "Idioma",
+    "accounting": "Contabilidad",
+    "general": "General",
+    "entries": "Registros",
+    "generalJournal": "Libro diario",
+    "generalLedger": "Libro mayor"
   },
   "shared": {
     "cancel": "Cancelar",

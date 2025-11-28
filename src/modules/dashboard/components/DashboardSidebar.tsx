@@ -1,14 +1,30 @@
 'use client';
 
-import { useMemo } from 'react';
+import { ForwardRefExoticComponent, JSX, RefAttributes, useMemo } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { BookOpen, Building2, Database } from 'lucide-react';
+import {
+    BetweenHorizontalStartIcon,
+    BookOpen,
+    BookOpenTextIcon,
+    Box,
+    Building2,
+    ChevronDown,
+    Database,
+    LucideProps,
+} from 'lucide-react';
 
 import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
-import { ThemeToggle } from '@/modules/shared/components';
+import {
+    CollapsibleContent,
+    CollapsibleTrigger,
+    SidebarMenuSub,
+    SidebarMenuSubItem,
+    ThemeToggle,
+} from '@/modules/shared/components';
+import { Collapsible } from '@/modules/shared/components';
 import {
     Select,
     SelectContent,
@@ -29,13 +45,47 @@ import {
     SidebarMenuItem,
 } from '@/modules/shared/components/sidebar';
 import { useLocalStorage } from '@/modules/shared/hooks';
+import { useLocale } from '@/modules/shared/components/LocaleProvider';
+
+interface SidebarGroupsProps {
+    label: string;
+    links: Link[];
+}
+
+interface Link {
+    title: string;
+    url: string;
+    icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+}
+
+const SidebarGroups = ({ label, links }: SidebarGroupsProps) => {
+    return (
+        <SidebarGroup>
+            <SidebarGroupLabel>{label}</SidebarGroupLabel>
+            <SidebarGroupContent>
+                <SidebarMenu>
+                    {links.map((link) => (
+                        <SidebarMenuItem key={link.title}>
+                            <SidebarMenuButton asChild>
+                                <Link href={link.url}>
+                                    <link.icon />
+                                    <span>{link.title}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
+            </SidebarGroupContent>
+        </SidebarGroup>
+    );
+};
 
 export function DashboardSidebar() {
     const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
-    const [locale, setLocale] = useLocalStorage('locale', 'es');
+    const { locale, setLocale } = useLocale();
     const t = useTranslations();
 
-    const items = useMemo(
+    const generalLinks = useMemo(
         () => [
             {
                 title: t('dashboard.companies'),
@@ -43,14 +93,41 @@ export function DashboardSidebar() {
                 icon: Building2,
             },
             {
-                title: t('dashboard.diaries'),
-                url: `/dashboard/${activeCompanyId}/diaries`,
-                icon: BookOpen,
-            },
-            {
                 title: t('dashboard.accounts'),
                 url: `/dashboard/${activeCompanyId}/accounts`,
                 icon: Database,
+            },
+            {
+                title: t('dashboard.diaries'),
+                url: `/dashboard/${activeCompanyId}/diaries`,
+                icon: Box,
+            },
+        ],
+        [activeCompanyId, t]
+    );
+
+    const entriesLinks = useMemo(
+        () => [
+            {
+                title: t('dashboard.entries'),
+                url: `/dashboard/${activeCompanyId}/entries`,
+                icon: BetweenHorizontalStartIcon,
+            },
+        ],
+        [activeCompanyId, t]
+    );
+
+    const ledgerLinks = useMemo(
+        () => [
+            {
+                title: t('dashboard.generalJournal'),
+                url: `/dashboard/${activeCompanyId}/general-journal`,
+                icon: BookOpen,
+            },
+            {
+                title: t('dashboard.generalLedger'),
+                url: `/dashboard/${activeCompanyId}/general-ledger`,
+                icon: BookOpenTextIcon,
             },
         ],
         [activeCompanyId, t]
@@ -60,23 +137,9 @@ export function DashboardSidebar() {
         <Sidebar>
             <SidebarHeader />
             <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <Link href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
+                <SidebarGroups label={t('dashboard.general')} links={generalLinks} />
+                <SidebarGroups label={t('dashboard.accounting')} links={entriesLinks} />
+                <SidebarGroups label={t('dashboard.ledgers')} links={ledgerLinks} />
             </SidebarContent>
             <SidebarFooter>
                 <SidebarGroup>
@@ -84,10 +147,7 @@ export function DashboardSidebar() {
                     <SidebarGroupContent className='flex flex-row gap-4'>
                         <Select
                             value={locale}
-                            onValueChange={(value) => {
-                                setLocale(value);
-                                document.cookie = `locale=${value}; path=/; max-age=31536000`;
-                            }}
+                            onValueChange={setLocale}
                         >
                             <SelectTrigger className='w-full'>
                                 <SelectValue />

@@ -48,7 +48,7 @@ export const updateAccount = async (id: string, data: UpdateAccountProps): Promi
             data,
         });
 
-        return response as Account;
+        return response as unknown as Account;
     } catch (error) {
         console.error(error);
         throw error;
@@ -73,7 +73,7 @@ export const updateAccountValue = async (
             },
         });
 
-        return response as Account;
+        return response as unknown as Account;
     } catch (error) {
         console.error(error);
         throw error;
@@ -90,7 +90,7 @@ export const deleteAccount = async (id: string): Promise<void> => {
 
         // Delete all child accounts recursively
         if (childrenResponse.rows && childrenResponse.rows.length > 0) {
-            for (const child of childrenResponse.rows as Account[]) {
+            for (const child of childrenResponse.rows as unknown as Account[]) {
                 await deleteAccount(child.id);
             }
         }
@@ -117,7 +117,7 @@ export const getParentAccounts = async (company_id: string): Promise<Account[]> 
             ],
         });
 
-        return response.rows as Account[];
+        return response.rows as unknown as Account[];
     } catch (error) {
         console.error(error);
         throw error;
@@ -131,7 +131,7 @@ export const getAllAccountsForHierarchy = async (company_id: string): Promise<Ac
             queries: [Query.equal('company_id', company_id), Query.orderAsc('id')],
         });
 
-        return response.rows as Account[];
+        return response.rows as unknown as Account[];
     } catch (error) {
         console.error(error);
         throw error;

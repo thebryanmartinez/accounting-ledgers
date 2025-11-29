@@ -1,9 +1,10 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { NextIntlClientProvider } from 'next-intl';
 import en from '@/dictionaries/en.json';
 import es from '@/dictionaries/es.json';
+import { useLocalStorage } from '@/modules/shared/hooks';
 
 const messages = { en, es };
 
@@ -21,11 +22,10 @@ export function useLocale() {
 }
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState(() => localStorage.getItem("locale") || "es");
+  const [locale, setLocaleValue] = useLocalStorage("locale", "es");
 
   const setLocale = (newLocale: string) => {
-    setLocaleState(newLocale);
-    localStorage.setItem('locale', newLocale);
+    setLocaleValue(newLocale);
     document.cookie = `locale=${newLocale}; path=/; max-age=31536000`;
   };
 

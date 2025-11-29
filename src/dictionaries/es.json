@@ -90,7 +90,8 @@
         "parentIdCannotBeChanged": "La relación de cuenta padre no puede ser modificada después de la creación.",
         "saveChanges": "Guardar cambios",
         "accountsTitle": "Cuentas",
-        "accountsDescription": "Administra tus cuentas y realiza un seguimiento de los saldos"
+        "accountsDescription": "Administra tus cuentas y realiza un seguimiento de los saldos",
+        "subtypeRequired": "El tipo de cuenta es obligatorio"
     },
     "companies": {
         "companiesTitle": "Empresas",
@@ -120,11 +121,16 @@
         "diaries": "Diarios",
         "accounts": "Cuentas",
         "language": "Idioma",
+        "english": "Inglés",
+        "spanish": "Español",
+        "settings": "Configuración",
         "accounting": "Contabilidad",
         "general": "General",
         "entries": "Registros",
         "generalJournal": "Libro diario",
-        "generalLedger": "Libro mayor"
+        "generalLedger": "Libro mayor",
+        "changeTheme": "Cambiar tema",
+        "signOut": "Cerrar sesión"
     },
     "shared": {
         "cancel": "Cancelar",

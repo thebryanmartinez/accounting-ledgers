@@ -33,16 +33,20 @@ export const useAuthentication = () => {
         router.push('/');
     };
 
-    const logout = async (): Promise<void> => {
-        await account.deleteSession('current');
-        setCurrent(null);
-        router.push('/');
+    const signOut = async (): Promise<void> => {
+        try {
+            await account.deleteSession({sessionId: 'current'});
+            setCurrent(null);
+            router.push('/login');
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return {
         current,
         login,
-        logout,
+        signOut,
         register,
     };
 };

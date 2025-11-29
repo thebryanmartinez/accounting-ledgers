@@ -90,7 +90,8 @@
         "parentIdCannotBeChanged": "Parent account relationship cannot be changed after creation.",
         "saveChanges": "Save changes",
         "accountsTitle": "Accounts",
-        "accountsDescription": "Manage your accounts and track balances"
+        "accountsDescription": "Manage your accounts and track balances",
+        "subtypeRequired": "Type of account is required"
     },
     "companies": {
         "companiesTitle": "Companies",
@@ -121,11 +122,16 @@
         "diaries": "Diaries",
         "accounts": "Accounts",
         "language": "Language",
+        "english": "English",
+        "spanish": "Español",
+        "settings": "Settings",
         "general": "General",
         "entries": "Entries",
         "accounting": "Accounting",
         "generalJournal": "General journal",
-        "generalLedger": "General ledger"
+        "generalLedger": "General ledger",
+        "changeTheme": "Change theme",
+        "signOut": "Sign out"
     },
     "shared": {
         "cancel": "Cancel",

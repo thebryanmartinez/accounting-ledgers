@@ -1,6 +1,6 @@
 'use client';
 
-import { ForwardRefExoticComponent, JSX, RefAttributes, useMemo } from 'react';
+import { ForwardRefExoticComponent, RefAttributes, useMemo } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -11,27 +11,11 @@ import {
     BookOpenTextIcon,
     Box,
     Building2,
-    ChevronDown,
     Database,
     LucideProps,
 } from 'lucide-react';
 
 import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
-import {
-    CollapsibleContent,
-    CollapsibleTrigger,
-    SidebarMenuSub,
-    SidebarMenuSubItem,
-    ThemeToggle,
-} from '@/modules/shared/components';
-import { Collapsible } from '@/modules/shared/components';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/modules/shared/components/select';
 import {
     Sidebar,
     SidebarContent,
@@ -45,7 +29,7 @@ import {
     SidebarMenuItem,
 } from '@/modules/shared/components/sidebar';
 import { useLocalStorage } from '@/modules/shared/hooks';
-import { useLocale } from '@/modules/shared/components/LocaleProvider';
+import { SettingsDropdown } from '@/modules/dashboard/components/SettingsDropdown';
 
 interface SidebarGroupsProps {
     label: string;
@@ -82,7 +66,6 @@ const SidebarGroups = ({ label, links }: SidebarGroupsProps) => {
 
 export function DashboardSidebar() {
     const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
-    const { locale, setLocale } = useLocale();
     const t = useTranslations();
 
     const generalLinks = useMemo(
@@ -142,24 +125,7 @@ export function DashboardSidebar() {
                 <SidebarGroups label={t('dashboard.ledgers')} links={ledgerLinks} />
             </SidebarContent>
             <SidebarFooter>
-                <SidebarGroup>
-                    <SidebarGroupLabel>{t('dashboard.language')}</SidebarGroupLabel>
-                    <SidebarGroupContent className='flex flex-row gap-4'>
-                        <Select
-                            value={locale}
-                            onValueChange={setLocale}
-                        >
-                            <SelectTrigger className='w-full'>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value='en'>English</SelectItem>
-                                <SelectItem value='es'>Español</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <ThemeToggle />
-                    </SidebarGroupContent>
-                </SidebarGroup>
+                <SettingsDropdown />
             </SidebarFooter>
         </Sidebar>
     );

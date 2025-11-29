@@ -12,7 +12,7 @@ import { AccountRowActions } from '@/modules/accounts/components/TableRowActions
 import { AccountsTableSkeleton } from '@/modules/accounts/components/TableSkeleton';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
 import { AccountType } from '@/modules/accounts/models';
-import { buildAccountHierarchy } from '@/modules/accounts/utils/hierarchy.utils';
+import { buildAccountHierarchy } from '@/modules/accounts/utils';
 import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
 import {
     Table,
@@ -75,7 +75,7 @@ export const AccountsTable = () => {
                     <TableRow className='[&> *]:font-bold'>
                         <TableHead className='w-[100px]'>{t('tableHeaderId')}</TableHead>
                         <TableHead>{t('tableHeaderName')}</TableHead>
-                        <TableHead>{t('tableHeaderType')}</TableHead>
+                        <TableHead>{t('subtypeLabel')}</TableHead>
                         <TableHead className='text-right'>{t('tableHeaderDebit')}</TableHead>
                         <TableHead className='text-right'>{t('tableHeaderCredit')}</TableHead>
                         <TableHead className='w-[50px]'>{t('tableHeaderActions')}</TableHead>
@@ -107,7 +107,7 @@ export const AccountsTable = () => {
                                                 : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
                                         }`}
                                     >
-                                        {isActive ? t('active') : t('passive')}
+                                        {t(account.subtype)}
                                     </span>
                                 </TableCell>
                                 <TableCell className='text-right font-mono'>

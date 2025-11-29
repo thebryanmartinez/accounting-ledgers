@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import { useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +11,14 @@ import { z } from 'zod';
 
 import { updateAccount } from '@/modules/accounts/api';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
-import { Account, AccountType } from '@/modules/accounts/models';
+import {
+    Account,
+    AccountSubtype,
+    AccountType,
+    ActiveSubtypes,
+    PassiveSubtypes,
+} from '@/modules/accounts/models';
+import { getAccountTypeFromSubtype } from '@/modules/accounts/utils';
 import {
     Button,
     Dialog,
@@ -28,7 +33,9 @@ import {
     Input,
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
+    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/modules/shared/components';
@@ -45,6 +52,17 @@ const createFormSchema = (t: (key: string) => string) =>
         type: z.enum(AccountType, {
             error: () => ({ message: t('typeRequired') }),
         }),
+        subtype: z.custom<AccountSubtype>(
+            (val) => {
+                return (
+                    Object.values(ActiveSubtypes).includes(val as ActiveSubtypes) ||
+                    Object.values(PassiveSubtypes).includes(val as PassiveSubtypes)
+                );
+            },
+            {
+                message: t('subtypeRequired'),
+            }
+        ),
     });
 
 type FormSchema = z.infer<ReturnType<typeof createFormSchema>>;
@@ -61,6 +79,7 @@ export const EditAccountDialog = ({ isOpen, setIsOpen, account }: EditAccountDia
         defaultValues: {
             name: account.name,
             type: account.type,
+            subtype: account.subtype,
         },
     });
 
@@ -100,18 +119,19 @@ export const EditAccountDialog = ({ isOpen, setIsOpen, account }: EditAccountDia
                         <Field>
                             <FieldLabel>{t('parentAccountLabel')}</FieldLabel>
                             <Input value={account.parent_id} disabled className='bg-muted' />
-                            <p className='text-xs text-muted-foreground'>{t('parentIdCannotBeChanged')}</p>
+                            <p className='text-xs text-muted-foreground'>
+                                {t('parentIdCannotBeChanged')}
+                            </p>
                         </Field>
                     )}
                     <Controller
                         control={form.control}
                         name='name'
                         render={({ field, fieldState }) => {
-                            const { ref, ...rest } = field;
                             return (
                                 <Field>
                                     <FieldLabel>{t('accountNameLabel')}</FieldLabel>
-                                    <Input placeholder='' {...rest} />
+                                    <Input placeholder='' {...field} />
                                     {fieldState.invalid && (
                                         <FieldError errors={[fieldState.error]} />
                                     )}
@@ -121,22 +141,41 @@ export const EditAccountDialog = ({ isOpen, setIsOpen, account }: EditAccountDia
                     />
                     <Controller
                         control={form.control}
-                        name='type'
+                        name='subtype'
                         render={({ field, fieldState }) => {
                             return (
                                 <Field className='w-full'>
-                                    <FieldLabel>{t('typeLabel')}</FieldLabel>
-                                    <Select onValueChange={field.onChange} value={field.value}>
+                                    <FieldLabel>{t('subtypeLabel')}</FieldLabel>
+                                    <Select
+                                        onValueChange={(value) => {
+                                            field.onChange(value);
+                                            const type = getAccountTypeFromSubtype(
+                                                value as AccountSubtype
+                                            );
+                                            form.setValue('type', type);
+                                        }}
+                                        value={field.value}
+                                    >
                                         <SelectTrigger className='w-full'>
                                             <SelectValue placeholder={t('selectTypePlaceholder')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value={AccountType.Active}>
-                                                {t('active')}
-                                            </SelectItem>
-                                            <SelectItem value={AccountType.Passive}>
-                                                {t('passive')}
-                                            </SelectItem>
+                                            <SelectGroup>
+                                                <SelectLabel>{t('active')}</SelectLabel>
+                                                {Object.values(ActiveSubtypes).map((subtype) => (
+                                                    <SelectItem key={subtype} value={subtype}>
+                                                        {t(subtype)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                            <SelectGroup>
+                                                <SelectLabel>{t('passive')}</SelectLabel>
+                                                {Object.values(PassiveSubtypes).map((subtype) => (
+                                                    <SelectItem key={subtype} value={subtype}>
+                                                        {t(subtype)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
                                         </SelectContent>
                                     </Select>
                                     {fieldState.invalid && (

@@ -3,6 +3,22 @@ export enum AccountType {
     Passive = 'passive',
 }
 
+export enum ActiveSubtypes {
+    CurrentAssets = 'current_assets',
+    NonCurrentAssets = 'non_current_assets',
+    FixedAssets = 'fixed_assets',
+    BankAccounts = 'bank_accounts',
+    Cash = 'cash',
+}
+
+export enum PassiveSubtypes {
+    CreditCard = 'credit_card',
+    CurrentLiabilities = 'current_liabilities',
+    NonCurrentLiabilities = 'non_current_liabilities',
+}
+
+export type AccountSubtype = ActiveSubtypes | PassiveSubtypes;
+
 export interface Account {
     $id: string;
     $createdAt: string;
@@ -12,6 +28,7 @@ export interface Account {
     debit: number;
     credit: number;
     type: AccountType;
+    subtype: AccountSubtype;
     id: string;
     parent_id?: string;
 }

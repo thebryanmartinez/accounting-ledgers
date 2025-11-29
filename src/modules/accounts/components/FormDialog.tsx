@@ -14,7 +14,14 @@ import {
     ACCOUNT_CREATE_FORM_ID,
     ACCOUNT_IS_SUBACCOUNT_CHECKBOX_ID,
 } from '@/modules/accounts/constants';
-import { Account, AccountType } from '@/modules/accounts/models';
+import {
+    Account,
+    AccountSubtype,
+    AccountType,
+    ActiveSubtypes,
+    PassiveSubtypes,
+} from '@/modules/accounts/models';
+import { getAccountTypeFromSubtype } from '@/modules/accounts/utils';
 import {
     Button,
     Checkbox,
@@ -29,7 +36,9 @@ import {
     Label,
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
+    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from '@/modules/shared/components';
@@ -48,6 +57,7 @@ interface AccountDialogDefaultValues {
     id: string;
     name: string;
     type: AccountType;
+    subtype?: AccountSubtype;
     parent_id?: string;
 }
 
@@ -60,6 +70,18 @@ export const createFormSchema = (t: (key: string) => string) =>
         type: z.enum(AccountType, {
             error: t('typeRequired'),
         }),
+
+        subtype: z.custom<AccountSubtype>(
+            (val) => {
+                return (
+                    Object.values(ActiveSubtypes).includes(val as ActiveSubtypes) ||
+                    Object.values(PassiveSubtypes).includes(val as PassiveSubtypes)
+                );
+            },
+            {
+                message: t('subtypeRequired'),
+            }
+        ),
 
         parent_id: z.string().optional(),
     });
@@ -86,6 +108,7 @@ export const AccountFormDialog = ({
             id: defaultValues.id,
             name: defaultValues.name,
             type: defaultValues.type,
+            subtype: defaultValues.subtype,
             parent_id: defaultValues.parent_id,
         },
     });
@@ -133,26 +156,41 @@ export const AccountFormDialog = ({
                 <div className='flex w-full gap-4'>
                     <Controller
                         control={form.control}
-                        name='type'
+                        name='subtype'
                         render={({ field, fieldState }) => {
-                            const { ref, ...rest } = field;
                             return (
                                 <Field className='w-full'>
-                                    <FieldLabel>{t('typeLabel')}</FieldLabel>
+                                    <FieldLabel>{t('subtypeLabel')}</FieldLabel>
                                     <Select
-                                        onValueChange={field.onChange}
+                                        onValueChange={(value) => {
+                                            field.onChange(value);
+                                            const type = getAccountTypeFromSubtype(
+                                                value as AccountSubtype
+                                            );
+                                            form.setValue('type', type);
+                                        }}
                                         defaultValue={field.value}
                                     >
                                         <SelectTrigger className='w-full'>
                                             <SelectValue placeholder={t('selectTypePlaceholder')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value={AccountType.Active}>
-                                                {t('active')}
-                                            </SelectItem>
-                                            <SelectItem value={AccountType.Passive}>
-                                                {t('passive')}
-                                            </SelectItem>
+                                            <SelectGroup>
+                                                <SelectLabel>{t('active')}</SelectLabel>
+                                                {Object.values(ActiveSubtypes).map((subtype) => (
+                                                    <SelectItem key={subtype} value={subtype}>
+                                                        {t(subtype)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
+                                            <SelectGroup>
+                                                <SelectLabel>{t('passive')}</SelectLabel>
+                                                {Object.values(PassiveSubtypes).map((subtype) => (
+                                                    <SelectItem key={subtype} value={subtype}>
+                                                        {t(subtype)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectGroup>
                                         </SelectContent>
                                     </Select>
                                     {fieldState.invalid && (

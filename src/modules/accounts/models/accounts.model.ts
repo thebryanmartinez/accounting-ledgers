@@ -9,7 +9,8 @@ export interface Account {
     $updatedAt: string;
     company_id: string;
     name: string;
-    initial_value: number;
+    debit: number;
+    credit: number;
     type: AccountType;
     id: string;
     parent_id?: string;

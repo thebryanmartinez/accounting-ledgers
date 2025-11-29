@@ -66,7 +66,6 @@ export const CreateAccountDialog = () => {
                 defaultValues={{
                     name: '',
                     id: '',
-                    initial_value: 0,
                     type: AccountType.Active,
                 }}
                 actionButtonText={t('createAccount')}

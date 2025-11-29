@@ -5,10 +5,11 @@ import { Account, AccountType } from '@/modules/accounts/models';
 interface CreateAccountProps {
     company_id: string;
     name: string;
-    initial_value?: number;
     type?: AccountType;
     parent_id?: string;
     id: string;
+    debit?: number;
+    credit?: number;
 }
 
 interface UpdateAccountProps {
@@ -32,6 +33,8 @@ export const createAccount = async (values: CreateAccountProps) => {
             rowId: ID.unique(),
             data: {
                 ...values,
+                debit: 0,
+                credit: 0,
             },
         });
     } catch (error) {
@@ -46,31 +49,6 @@ export const updateAccount = async (id: string, data: UpdateAccountProps): Promi
             ...tableProperties,
             rowId: id,
             data,
-        });
-
-        return response as unknown as Account;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
-
-export const updateAccountValue = async (
-    id: string,
-    value: number,
-    currentValue: number,
-    accountType: AccountType
-): Promise<Account> => {
-    try {
-        const newValue =
-            accountType === AccountType.Active ? currentValue + value : currentValue - value;
-
-        const response = await tablesDB.updateRow({
-            ...tableProperties,
-            rowId: id,
-            data: {
-                initial_value: newValue,
-            },
         });
 
         return response as unknown as Account;

@@ -76,7 +76,8 @@ export const AccountsTable = () => {
                         <TableHead className='w-[100px]'>{t('tableHeaderId')}</TableHead>
                         <TableHead>{t('tableHeaderName')}</TableHead>
                         <TableHead>{t('tableHeaderType')}</TableHead>
-                        <TableHead className='text-right'>{t('tableHeaderBalance')}</TableHead>
+                        <TableHead className='text-right'>{t('tableHeaderDebit')}</TableHead>
+                        <TableHead className='text-right'>{t('tableHeaderCredit')}</TableHead>
                         <TableHead className='w-[50px]'>{t('tableHeaderActions')}</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -110,7 +111,10 @@ export const AccountsTable = () => {
                                     </span>
                                 </TableCell>
                                 <TableCell className='text-right font-mono'>
-                                    {formatCurrency(account.initial_value)}
+                                    {formatCurrency(account.debit)}
+                                </TableCell>
+                                <TableCell className='text-right font-mono'>
+                                    {formatCurrency(account.credit)}
                                 </TableCell>
                                 <TableCell>
                                     <AccountRowActions

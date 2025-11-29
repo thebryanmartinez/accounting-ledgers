@@ -4,9 +4,8 @@ import { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { MoreHorizontal, Pencil, PlusCircle, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 
-import { AddValueDialog } from '@/modules/accounts/components/AddValueDialog';
 import { DeleteAccountDialog } from '@/modules/accounts/components/DeleteDialog';
 import { EditAccountDialog } from '@/modules/accounts/components/EditDialog';
 import { Account } from '@/modules/accounts/models';
@@ -26,7 +25,6 @@ interface AccountRowActionsProps {
 
 export const AccountRowActions = ({ account, hasChildren = false }: AccountRowActionsProps) => {
     const t = useTranslations('accounts');
-    const [isAddValueOpen, setIsAddValueOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -40,10 +38,6 @@ export const AccountRowActions = ({ account, hasChildren = false }: AccountRowAc
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
-                    <DropdownMenuItem onClick={() => setIsAddValueOpen(true)}>
-                        <PlusCircle className='mr-2 h-4 w-4' />
-                        {t('addValue')}
-                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
                         <Pencil className='mr-2 h-4 w-4' />
                         {t('edit')}
@@ -55,12 +49,6 @@ export const AccountRowActions = ({ account, hasChildren = false }: AccountRowAc
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-
-            <AddValueDialog
-                isOpen={isAddValueOpen}
-                setIsOpen={setIsAddValueOpen}
-                account={account}
-            />
 
             <EditAccountDialog isOpen={isEditOpen} setIsOpen={setIsEditOpen} account={account} />
 

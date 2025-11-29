@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+
 import { useTranslations } from 'next-intl';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -46,32 +47,22 @@ interface AccountDialogForm {
 interface AccountDialogDefaultValues {
     id: string;
     name: string;
-    initial_value: number;
     type: AccountType;
     parent_id?: string;
 }
 
-export const createFormSchema = (t: (key: string) => string) => z.object({
-    id: z.string().min(1, t('idRequired')).max(50, t('idMaxLength')),
+export const createFormSchema = (t: (key: string) => string) =>
+    z.object({
+        id: z.string().min(1, t('idRequired')).max(50, t('idMaxLength')),
 
-    name: z.string().min(1, t('nameRequired')).max(100, t('nameMaxLength')),
+        name: z.string().min(1, t('nameRequired')).max(100, t('nameMaxLength')),
 
-    initial_value: z.coerce
-        .number({
-            error: t('initialValueRequired'),
-        })
-        .min(0, t('initialValueMin'))
-        .refine(
-            (val) => Number.isFinite(val) && Number(val.toFixed(2)) === val,
-            t('initialValueDecimal')
-        ),
+        type: z.enum(AccountType, {
+            error: t('typeRequired'),
+        }),
 
-    type: z.enum(AccountType, {
-        error: t('typeRequired'),
-    }),
-
-    parent_id: z.string().optional(),
-});
+        parent_id: z.string().optional(),
+    });
 
 export type FormSchema = z.infer<ReturnType<typeof createFormSchema>>;
 
@@ -94,7 +85,6 @@ export const AccountFormDialog = ({
         defaultValues: {
             id: defaultValues.id,
             name: defaultValues.name,
-            initial_value: defaultValues.initial_value,
             type: defaultValues.type,
             parent_id: defaultValues.parent_id,
         },
@@ -143,22 +133,6 @@ export const AccountFormDialog = ({
                 <div className='flex w-full gap-4'>
                     <Controller
                         control={form.control}
-                        name='initial_value'
-                        render={({ field, fieldState }) => {
-                            const { ref, ...rest } = field;
-                            return (
-                                <Field>
-                                    <FieldLabel>{t('initialValueLabel')}</FieldLabel>
-                                    <Input className='w-full' placeholder='' {...rest} />
-                                    {fieldState.invalid && (
-                                        <FieldError errors={[fieldState.error]} />
-                                    )}
-                                </Field>
-                            );
-                        }}
-                    />
-                    <Controller
-                        control={form.control}
                         name='type'
                         render={({ field, fieldState }) => {
                             const { ref, ...rest } = field;
@@ -195,9 +169,7 @@ export const AccountFormDialog = ({
                         checked={isSubaccount}
                         onCheckedChange={(checked) => setIsSubaccount(!!checked)}
                     />
-                    <Label htmlFor={ACCOUNT_IS_SUBACCOUNT_CHECKBOX_ID}>
-                        {t('isSubaccount')}
-                    </Label>
+                    <Label htmlFor={ACCOUNT_IS_SUBACCOUNT_CHECKBOX_ID}>{t('isSubaccount')}</Label>
                 </div>
                 {isSubaccount && (
                     <div>
@@ -209,12 +181,11 @@ export const AccountFormDialog = ({
                                 return (
                                     <Field className='w-full'>
                                         <FieldLabel>{t('parentAccountLabel')}</FieldLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            value={field.value}
-                                        >
+                                        <Select onValueChange={field.onChange} value={field.value}>
                                             <SelectTrigger className='w-full'>
-                                                <SelectValue placeholder={t('selectParentPlaceholder')} />
+                                                <SelectValue
+                                                    placeholder={t('selectParentPlaceholder')}
+                                                />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {parentAccounts.length === 0 ? (
@@ -223,7 +194,10 @@ export const AccountFormDialog = ({
                                                     </div>
                                                 ) : (
                                                     parentAccounts.map((account) => (
-                                                        <SelectItem key={account.$id} value={account.id}>
+                                                        <SelectItem
+                                                            key={account.$id}
+                                                            value={account.id}
+                                                        >
                                                             {account.id} - {account.name}
                                                         </SelectItem>
                                                     ))

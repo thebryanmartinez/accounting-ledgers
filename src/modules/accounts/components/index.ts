@@ -2,7 +2,6 @@ export * from './TableRowActions';
 export * from './TableEmptyState';
 export * from './Table';
 export * from './TableSkeleton';
-export * from './AddValueDialog';
 export * from './CreateDialog';
 export * from './DeleteDialog';
 export * from './EditDialog';

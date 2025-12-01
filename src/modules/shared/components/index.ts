@@ -1,4 +1,5 @@
 export * from './alert-dialog';
+export * from './AuthGuard';
 export * from './button';
 export * from './card';
 export * from './checkbox';

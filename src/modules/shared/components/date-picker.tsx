@@ -9,7 +9,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/modules/shared/components/button';
 import { Calendar } from '@/modules/shared/components/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/modules/shared/components/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/modules/shared/components';
 import { useLocale } from '@/modules/shared/components/LocaleProvider';
 
 interface DatePickerProps {

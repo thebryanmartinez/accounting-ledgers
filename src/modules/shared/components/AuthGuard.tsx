@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 
 import { account } from '@/lib/appwrite';
-import { Spinner } from '@/modules/shared/components/spinner';
+import { Spinner } from '@/modules/shared/components';
 import {
     SESSION_CHECK_GARBAGE_COLLECTION_TIME_INTERVAL,
     SESSION_CHECK_STALE_TIME_INTERVAL,

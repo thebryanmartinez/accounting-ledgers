@@ -1,7 +1,7 @@
 import { JSX } from 'react';
 
-import { Item, ItemActions, ItemContent, ItemDescription } from '@/modules/shared/components/item';
-import { ItemTitle } from '@/modules/shared/components/item';
+import { Item, ItemActions, ItemContent, ItemDescription } from '@/modules/shared/components';
+import { ItemTitle } from '@/modules/shared/components';
 
 interface PageHeaderProps {
     title: string;

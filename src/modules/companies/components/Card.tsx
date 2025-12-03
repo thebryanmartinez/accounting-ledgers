@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CircleCheckBig, MoreHorizontal } from 'lucide-react';
+import { CircleCheckBig, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { z } from 'zod';
 
 import { COMPANIES_QUERY_KEYS } from '@/modules/companies/constants';
@@ -19,6 +19,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/modules/shared/components';
 
@@ -70,7 +71,7 @@ export function CompanyCard({
             <Card className={`w-full md:min-w-[350px] h-[170px] ${activeStyles}`}>
                 <CardHeader>
                     <CardTitle>{name}</CardTitle>
-                    <CardDescription className='h-[1rem]'>{description}</CardDescription>
+                    <CardDescription className='h-4'>{description}</CardDescription>
                 </CardHeader>
                 <CardContent />
                 <CardFooter className='justify-end gap-4'>
@@ -88,20 +89,27 @@ export function CompanyCard({
                                     <DropdownMenuContent>
                                         <DialogTrigger asChild>
                                             <DropdownMenuItem
-                                                onSelect={() => {
+                                                onClick={() => {
                                                     setIsEditDialogOpen(true);
                                                     document.body.style.pointerEvents = '';
                                                 }}
                                             >
+                                                <Pencil className='mr-2 h-4 w-4' />
+
                                                 {t('edit')}
                                             </DropdownMenuItem>
                                         </DialogTrigger>
+                                        <DropdownMenuSeparator />
+
                                         <DropdownMenuItem
-                                            onSelect={() => {
+                                            onClick={() => {
                                                 setIsDeleteDialogOpen(true);
                                                 document.body.style.pointerEvents = '';
                                             }}
+                                            variant='destructive'
                                         >
+                                            <Trash2 className='mr-2 h-4 w-4' />
+
                                             {t('delete')}
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -130,6 +138,7 @@ export function CompanyCard({
                 setIsOpen={setIsDeleteDialogOpen}
                 isOpen={isDeleteDialogOpen}
                 id={id}
+                companyName={name}
                 deleteMutationCallback={() => setIsDeleteDialogOpen(false)}
             />
         </>

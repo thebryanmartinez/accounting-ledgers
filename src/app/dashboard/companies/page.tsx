@@ -6,11 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getCompanies } from '@/modules/companies/api';
 import { CompanyCard, CreateCompanyDialog, SkeletonCard } from '@/modules/companies/components';
-import {
-    ACTIVE_COMPANY_ID_KEY,
-    ACTIVE_COMPANY_NAME_KEY,
-    COMPANIES_QUERY_KEYS,
-} from '@/modules/companies/constants';
+import { COMPANIES_QUERY_KEYS } from '@/modules/companies/constants';
+import { useActiveCompany } from '@/modules/companies/contexts';
 import { PageHeader } from '@/modules/shared/components';
 import {
     GARBAGE_COLLECTION_TIME_INTERVAL,
@@ -18,7 +15,6 @@ import {
     REFETCH_ON_WINDOW_FOCUS_BOOLEAN,
     STALE_TIME_INTERVAL,
 } from '@/modules/shared/constants';
-import { useLocalStorage } from '@/modules/shared/hooks';
 
 export default function Companies() {
     const t = useTranslations('companies');
@@ -32,13 +28,12 @@ export default function Companies() {
         refetchOnMount: REFETCH_ON_MOUNT_BOOLEAN,
     });
 
-    const [activeCompanyId, setActiveCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
-    const [, setActiveCompanyName] = useLocalStorage(ACTIVE_COMPANY_NAME_KEY, '');
+    const { activeCompanyId, setActiveCompany } = useActiveCompany();
 
     return (
         <section className='space-y-6'>
             <PageHeader title={t('companiesTitle')} description={t('companiesDescription')}>
-                <CreateCompanyDialog />
+                <CreateCompanyDialog hasCompanies={companies ? companies.total > 0 : false} />
             </PageHeader>
 
             {isPending ? (
@@ -61,8 +56,7 @@ export default function Companies() {
                             description={company.description ?? ''}
                             isActive={activeCompanyId === company.$id}
                             onClickSetAsActive={() => {
-                                setActiveCompanyId(company.$id);
-                                setActiveCompanyName(company.name);
+                                setActiveCompany(company.$id, company.name);
                             }}
                         />
                     ))}

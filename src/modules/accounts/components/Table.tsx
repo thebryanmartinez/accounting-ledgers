@@ -13,7 +13,7 @@ import { AccountsTableSkeleton } from '@/modules/accounts/components/TableSkelet
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
 import { AccountType } from '@/modules/accounts/models';
 import { buildAccountHierarchy } from '@/modules/accounts/utils';
-import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
+import { useActiveCompany } from '@/modules/companies/contexts';
 import {
     Table,
     TableBody,
@@ -28,7 +28,6 @@ import {
     REFETCH_ON_WINDOW_FOCUS_BOOLEAN,
     STALE_TIME_INTERVAL,
 } from '@/modules/shared/constants';
-import { useLocalStorage } from '@/modules/shared/hooks';
 
 const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -39,7 +38,7 @@ const formatCurrency = (value: number) => {
 
 export const AccountsTable = () => {
     const t = useTranslations('accounts');
-    const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+    const { activeCompanyId } = useActiveCompany();
 
     const { data: allAccounts = [], isPending } = useQuery({
         queryKey: [ACCOUNTS_QUERY_KEYS.GET, activeCompanyId],

@@ -109,11 +109,14 @@
         "setAsActive": "Set as active",
         "isActive": "is active!",
         "noCompaniesFound": "No companies found",
-        "createCompanyToGetStarted": "Create a new company to get started.",
-        "companyName": "Company name",
+        "companyName": "Company Name",
         "companyDescriptionOptional": "Company's description (optional)",
         "companyNameRequired": "Company name is required",
-        "companyNameMaxLength": "Company name must be at most 50 characters long"
+        "companyNameMaxLength": "Company name must be at most 50 characters long",
+        "deleteCompanyWarning": "WARNING: Deleting a company is a destructive action that will permanently remove all associated data including accounts, entries, and ledgers due to foreign key constraints. This action cannot be undone.",
+        "deleteCompanyConfirmationInput": "To confirm deletion, type the exact company name below:",
+        "deleteCompanyNameMismatch": "Company name must match exactly",
+        "createCompanyToGetStarted": "Create a company to get started"
     },
     "entries": {
         "entriesTitle": "Entries",
@@ -177,7 +180,12 @@
         "generalJournal": "General journal",
         "generalLedger": "General ledger",
         "changeTheme": "Change theme",
-        "signOut": "Sign out"
+        "signOut": "Sign out",
+        "tooltips": {
+            "requiresCompany": "Please select or create a company first",
+            "requiresAccounts": "Please create accounts for this company first",
+            "requiresEntries": "Please create entries first"
+        }
     },
     "shared": {
         "cancel": "Cancel",

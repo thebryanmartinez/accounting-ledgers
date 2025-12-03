@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { SIDEBAR_QUERY_KEYS } from '@/modules/dashboard/constants';
 import { deleteEntry } from '@/modules/entries/api';
 import { ENTRIES_QUERY_KEYS } from '@/modules/entries/constants';
 import { Entry } from '@/modules/entries/models';
@@ -38,7 +39,7 @@ export const DeleteEntryDialog = ({ isOpen, setIsOpen, entry }: DeleteEntryDialo
         mutationFn: deleteEntry,
         mutationKey: [ENTRIES_QUERY_KEYS.DELETE],
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET] });
+            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET, SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ENTRIES] });
             setIsOpen(false);
             toast.success(t('entryDeletedSuccess'));
         },

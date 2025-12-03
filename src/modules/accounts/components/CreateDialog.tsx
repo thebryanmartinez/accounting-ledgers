@@ -12,15 +12,15 @@ import { createAccount, getParentAccounts } from '@/modules/accounts/api';
 import { AccountFormDialog, FormSchema } from '@/modules/accounts/components';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
 import { AccountType } from '@/modules/accounts/models';
-import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
+import { useActiveCompany } from '@/modules/companies/contexts';
+import { SIDEBAR_QUERY_KEYS } from '@/modules/dashboard/constants';
 import { Button, Dialog, DialogTrigger } from '@/modules/shared/components';
-import { useLocalStorage } from '@/modules/shared/hooks';
 
 export const CreateAccountDialog = () => {
     const t = useTranslations('accounts');
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
-    const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+    const { activeCompanyId } = useActiveCompany();
 
     const { data: parentAccounts = [] } = useQuery({
         queryKey: [ACCOUNTS_QUERY_KEYS.GET, 'parents', activeCompanyId],
@@ -33,6 +33,9 @@ export const CreateAccountDialog = () => {
         mutationKey: [ACCOUNTS_QUERY_KEYS.POST],
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [ACCOUNTS_QUERY_KEYS.GET] });
+            queryClient.invalidateQueries({
+                queryKey: [SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ACCOUNTS]
+            });
             setOpen(false);
             toast.success(t('accountCreatedSuccess'));
         },

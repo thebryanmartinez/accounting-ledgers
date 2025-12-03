@@ -12,12 +12,14 @@ import { account } from '@/lib/appwrite';
 import { createCompany } from '@/modules/companies/api';
 import { CompanyDialogForm, formSchema } from '@/modules/companies/components';
 import { COMPANIES_QUERY_KEYS } from '@/modules/companies/constants';
+import { useActiveCompany } from '@/modules/companies/contexts';
 import { Button, Dialog, DialogTrigger } from '@/modules/shared/components';
 
-export const CreateCompanyDialog = () => {
+export const CreateCompanyDialog = ({ hasCompanies }: { hasCompanies: boolean }) => {
     const t = useTranslations('companies');
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
+    const { setActiveCompany } = useActiveCompany();
 
     const createCompanyMutation = useMutation({
         mutationFn: createCompany,
@@ -28,12 +30,18 @@ export const CreateCompanyDialog = () => {
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema> & { active: boolean }) => {
         const user = await account.get();
-        await createCompanyMutation.mutateAsync({
+        const newCompany = await createCompanyMutation.mutateAsync({
             user_id: user.$id,
             ...values,
         });
+
+        if (values.active || !hasCompanies) {
+            if (newCompany) {
+                setActiveCompany(newCompany.$id, newCompany.name);
+            }
+        }
     };
 
     return (
@@ -49,6 +57,9 @@ export const CreateCompanyDialog = () => {
                 description={t('createCompanyDescription')}
                 onSubmit={onSubmit}
                 onSubmitMutation={createCompanyMutation}
+                showActiveCheckbox={true}
+                isFirstCompany={!hasCompanies}
+                actionButtonText={t('create')}
             />
         </Dialog>
     );

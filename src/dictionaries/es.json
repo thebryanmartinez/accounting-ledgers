@@ -98,7 +98,7 @@
         "companiesDescription": "Administra tus empresas y cambia entre ellas",
         "create": "Crear",
         "createNewCompany": "Crear una nueva empresa",
-        "createCompanyDescription": "Los libros y cuentas se crean bajo una empresa. Puedes crear",
+        "createCompanyDescription": "Los libros y cuentas se crean bajo una empresa. ",
         "edit": "Editar",
         "editCompany": "Editar empresa",
         "editCompanyDescription": "Puedes editar el nombre y la descripción de la empresa.",
@@ -109,11 +109,14 @@
         "setAsActive": "Establecer como activa",
         "isActive": "¡está activa!",
         "noCompaniesFound": "No se encontraron empresas",
-        "createCompanyToGetStarted": "Crea una nueva empresa para comenzar.",
         "companyName": "Nombre de la empresa",
         "companyDescriptionOptional": "Descripción de la empresa (opcional)",
         "companyNameRequired": "El nombre de la empresa es obligatorio",
-        "companyNameMaxLength": "El nombre de la empresa debe tener como máximo 50 caracteres"
+        "companyNameMaxLength": "El nombre de la empresa debe tener como máximo 50 caracteres",
+        "deleteCompanyWarning": "ADVERTENCIA: Eliminar una empresa es una acción destruyente que eliminará permanentemente todos los datos asociados, incluidas las cuentas, registros y libros debido a las restricciones de clave foránea. Esta acción no se puede deshacer.",
+        "deleteCompanyConfirmationInput": "Para confirmar la eliminación, escriba el nombre exacto de la empresa a continuación:",
+        "deleteCompanyNameMismatch": "El nombre de la empresa debe coincidir exactamente",
+        "createCompanyToGetStarted": "Crea una compañia para iniciar"
     },
     "entries": {
         "entriesTitle": "Registros",
@@ -176,7 +179,12 @@
         "generalJournal": "Libro diario",
         "generalLedger": "Libro mayor",
         "changeTheme": "Cambiar tema",
-        "signOut": "Cerrar sesión"
+        "signOut": "Cerrar sesión",
+        "tooltips": {
+            "requiresCompany": "Por favor selecciona o crea una empresa primero",
+            "requiresAccounts": "Por favor crea cuentas para esta empresa primero",
+            "requiresEntries": "Por favor crea registros primero"
+        }
     },
     "shared": {
         "cancel": "Cancelar",

@@ -1,9 +1,8 @@
 'use client';
 
-import { ForwardRefExoticComponent, RefAttributes, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 
 import {
     BetweenHorizontalStartIcon,
@@ -12,10 +11,9 @@ import {
     Box,
     Building2,
     Database,
-    LucideProps,
 } from 'lucide-react';
 
-import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
+import { useActiveCompany } from '@/modules/companies/contexts';
 import {
     Sidebar,
     SidebarContent,
@@ -25,24 +23,14 @@ import {
     SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
-    SidebarMenuButton,
     SidebarMenuItem,
 } from '@/modules/shared/components/sidebar';
-import { useLocalStorage } from '@/modules/shared/hooks';
 import { SettingsDropdown } from '@/modules/dashboard/components/SettingsDropdown';
+import { SidebarLinkWithTooltip } from '@/modules/dashboard/components/SidebarLinkWithTooltip';
+import { useSidebarValidation } from '@/modules/dashboard/hooks/useSidebarValidation';
+import { SidebarGroupConfig } from '@/modules/dashboard/models/sidebar.model';
 
-interface SidebarGroupsProps {
-    label: string;
-    links: Link[];
-}
-
-interface Link {
-    title: string;
-    url: string;
-    icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
-}
-
-const SidebarGroups = ({ label, links }: SidebarGroupsProps) => {
+const SidebarGroups = ({ label, links }: SidebarGroupConfig) => {
     return (
         <SidebarGroup>
             <SidebarGroupLabel>{label}</SidebarGroupLabel>
@@ -50,12 +38,7 @@ const SidebarGroups = ({ label, links }: SidebarGroupsProps) => {
                 <SidebarMenu>
                     {links.map((link) => (
                         <SidebarMenuItem key={link.title}>
-                            <SidebarMenuButton asChild>
-                                <Link href={link.url}>
-                                    <link.icon />
-                                    <span>{link.title}</span>
-                                </Link>
-                            </SidebarMenuButton>
+                            <SidebarLinkWithTooltip link={link} />
                         </SidebarMenuItem>
                     ))}
                 </SidebarMenu>
@@ -65,7 +48,8 @@ const SidebarGroups = ({ label, links }: SidebarGroupsProps) => {
 };
 
 export function DashboardSidebar() {
-    const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+    const { activeCompanyId } = useActiveCompany();
+    const { permissions, validationState } = useSidebarValidation();
     const t = useTranslations();
 
     const generalLinks = useMemo(
@@ -79,14 +63,24 @@ export function DashboardSidebar() {
                 title: t('dashboard.accounts'),
                 url: `/dashboard/${activeCompanyId}/accounts`,
                 icon: Database,
+                disabled: !permissions.canViewAccounts,
+                tooltipContent: !permissions.canViewAccounts
+                    ? t('dashboard.tooltips.requiresCompany')
+                    : undefined,
             },
             {
                 title: t('dashboard.diaries'),
                 url: `/dashboard/${activeCompanyId}/diaries`,
                 icon: Box,
+                disabled: !permissions.canViewDiaries,
+                tooltipContent: !permissions.canViewDiaries
+                    ? !validationState.hasActiveCompany
+                        ? t('dashboard.tooltips.requiresCompany')
+                        : t('dashboard.tooltips.requiresAccounts')
+                    : undefined,
             },
         ],
-        [activeCompanyId, t]
+        [activeCompanyId, permissions, validationState, t]
     );
 
     const entriesLinks = useMemo(
@@ -95,9 +89,15 @@ export function DashboardSidebar() {
                 title: t('dashboard.entries'),
                 url: `/dashboard/${activeCompanyId}/entries`,
                 icon: BetweenHorizontalStartIcon,
+                disabled: !permissions.canViewEntries,
+                tooltipContent: !permissions.canViewEntries
+                    ? !validationState.hasActiveCompany
+                        ? t('dashboard.tooltips.requiresCompany')
+                        : t('dashboard.tooltips.requiresAccounts')
+                    : undefined,
             },
         ],
-        [activeCompanyId, t]
+        [activeCompanyId, permissions, validationState, t]
     );
 
     const ledgerLinks = useMemo(
@@ -106,14 +106,30 @@ export function DashboardSidebar() {
                 title: t('dashboard.generalJournal'),
                 url: `/dashboard/${activeCompanyId}/general-journal`,
                 icon: BookOpen,
+                disabled: !permissions.canViewLedgers,
+                tooltipContent: !permissions.canViewLedgers
+                    ? !validationState.hasActiveCompany
+                        ? t('dashboard.tooltips.requiresCompany')
+                        : !validationState.hasAccounts
+                          ? t('dashboard.tooltips.requiresAccounts')
+                          : t('dashboard.tooltips.requiresEntries')
+                    : undefined,
             },
             {
                 title: t('dashboard.generalLedger'),
                 url: `/dashboard/${activeCompanyId}/general-ledger`,
                 icon: BookOpenTextIcon,
+                disabled: !permissions.canViewLedgers,
+                tooltipContent: !permissions.canViewLedgers
+                    ? !validationState.hasActiveCompany
+                        ? t('dashboard.tooltips.requiresCompany')
+                        : !validationState.hasAccounts
+                          ? t('dashboard.tooltips.requiresAccounts')
+                          : t('dashboard.tooltips.requiresEntries')
+                    : undefined,
             },
         ],
-        [activeCompanyId, t]
+        [activeCompanyId, permissions, validationState, t]
     );
 
     return (

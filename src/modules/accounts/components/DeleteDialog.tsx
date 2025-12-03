@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 
 import { deleteAccount } from '@/modules/accounts/api';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
+import { SIDEBAR_QUERY_KEYS } from '@/modules/dashboard/constants';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -42,7 +43,7 @@ export const DeleteAccountDialog = ({
         mutationFn: deleteAccount,
         mutationKey: [ACCOUNTS_QUERY_KEYS.DELETE],
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [ACCOUNTS_QUERY_KEYS.GET] });
+            queryClient.invalidateQueries({ queryKey: [ACCOUNTS_QUERY_KEYS.GET, SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ACCOUNTS] });
             setIsOpen(false);
             toast.success(t('accountDeletedSuccess'));
         },

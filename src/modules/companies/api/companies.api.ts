@@ -1,4 +1,6 @@
-import { Client, ID, TablesDB } from 'appwrite';
+import { Client, ID, Query, TablesDB } from 'appwrite';
+
+import { account } from '@/lib/appwrite';
 
 interface Companies {
     name: string;
@@ -24,8 +26,10 @@ const tablesDB = new TablesDB(client);
 
 export const getCompanies = async () => {
     try {
+        const user = await account.get();
         return await tablesDB.listRows({
             ...tableProperties,
+            queries: [Query.equal('user_id', user.$id)],
         });
     } catch (error) {
         console.error(error);

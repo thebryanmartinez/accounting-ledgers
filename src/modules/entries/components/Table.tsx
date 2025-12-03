@@ -8,13 +8,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getAllAccountsForHierarchy } from '@/modules/accounts/api';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
+import { useActiveCompany } from '@/modules/companies/contexts';
 import { getEntriesByCompany } from '@/modules/entries/api';
 import { EntriesEmptyState } from '@/modules/entries/components/TableEmptyState';
 import { EntryRowActions } from '@/modules/entries/components/TableRowActions';
 import { EntriesTableSkeleton } from '@/modules/entries/components/TableSkeleton';
 import { ENTRIES_QUERY_KEYS } from '@/modules/entries/constants';
 import { formatCurrency, formatDate, formatMonthLabel, groupEntriesByMonth } from '@/modules/entries/utils';
-import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
 import {
     Table,
     TableBody,
@@ -30,12 +30,11 @@ import {
     REFETCH_ON_WINDOW_FOCUS_BOOLEAN,
     STALE_TIME_INTERVAL,
 } from '@/modules/shared/constants';
-import { useLocalStorage } from '@/modules/shared/hooks';
 
 export const EntriesTable = () => {
     const t = useTranslations('entries');
     const { locale } = useLocale();
-    const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+    const { activeCompanyId } = useActiveCompany();
 
     const { data: allEntries = [], isPending: isEntriesPending } = useQuery({
         queryKey: [ENTRIES_QUERY_KEYS.GET, activeCompanyId],

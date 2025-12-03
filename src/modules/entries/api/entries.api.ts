@@ -87,3 +87,17 @@ export const getEntriesByCompany = async (company_id: string): Promise<Entry[]> 
         throw error;
     }
 };
+
+export const hasEntries = async (company_id: string): Promise<boolean> => {
+    try {
+        const response = await tablesDB.listRows({
+            ...tableProperties,
+            queries: [Query.equal('company_id', company_id), Query.limit(1)],
+        });
+
+        return (response.rows?.length ?? 0) > 0;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};

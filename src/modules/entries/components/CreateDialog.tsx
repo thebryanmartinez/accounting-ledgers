@@ -10,18 +10,18 @@ import { toast } from 'sonner';
 
 import { getAllAccountsForHierarchy } from '@/modules/accounts/api';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
+import { useActiveCompany } from '@/modules/companies/contexts';
+import { SIDEBAR_QUERY_KEYS } from '@/modules/dashboard/constants';
 import { createEntry } from '@/modules/entries/api';
 import { EntryFormDialog, FormSchema } from '@/modules/entries/components/FormDialog';
 import { ENTRIES_QUERY_KEYS } from '@/modules/entries/constants';
-import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
 import { Button, Dialog, DialogTrigger } from '@/modules/shared/components';
-import { useLocalStorage } from '@/modules/shared/hooks';
 
 export const CreateEntryDialog = () => {
     const t = useTranslations('entries');
     const queryClient = useQueryClient();
     const [open, setOpen] = useState(false);
-    const [activeCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+    const { activeCompanyId } = useActiveCompany();
 
     const { data: accounts = [] } = useQuery({
         queryKey: [ACCOUNTS_QUERY_KEYS.GET, activeCompanyId],
@@ -33,7 +33,7 @@ export const CreateEntryDialog = () => {
         mutationFn: createEntry,
         mutationKey: [ENTRIES_QUERY_KEYS.POST],
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET] });
+            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET, SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ENTRIES] });
             setOpen(false);
             toast.success(t('entryCreatedSuccess'));
         },

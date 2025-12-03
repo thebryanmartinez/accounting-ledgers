@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { CREATE_COMPANY_FORM_ID } from '@/modules/companies/constants';
 import {
     Button,
+    Checkbox,
     DialogContent,
     DialogDescription,
     DialogHeader,
@@ -17,6 +18,7 @@ import {
     FieldError,
     FieldLabel,
     Input,
+    Label,
     Textarea,
 } from '@/modules/shared/components';
 
@@ -30,20 +32,32 @@ interface CompanyDialogFormProps {
     onSubmitMutation: any;
     nameDefaultValue?: string;
     descriptionDefaultValue?: string;
+    showActiveCheckbox?: boolean;
+    isFirstCompany?: boolean;
 }
+
+export const formSchema = z.object({
+    name: z.string().min(1, { message: 'companyNameRequired' }).max(50, {
+        message: 'companyNameMaxLength',
+    }),
+    description: z.optional(z.string()),
+    active: z.boolean().default(false),
+});
 
 export const CompanyDialogForm = ({
     title,
     description,
-    actionButtonText = 'Create',
+    actionButtonText,
     onSubmit,
     onSubmitMutation,
     nameDefaultValue = '',
     descriptionDefaultValue = '',
+    showActiveCheckbox = false,
+    isFirstCompany = false,
 }: CompanyDialogFormProps) => {
     const t = useTranslations('companies');
 
-    const formSchema = z.object({
+    const formSchemaWithTranslations = z.object({
         name: z
             .string()
             .min(1, { message: t('companyNameRequired') })
@@ -51,18 +65,21 @@ export const CompanyDialogForm = ({
                 message: t('companyNameMaxLength'),
             }),
         description: z.optional(z.string()),
+        active: z.boolean().default(false),
     });
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof formSchemaWithTranslations>>({
+        resolver: zodResolver(formSchemaWithTranslations),
         defaultValues: {
             name: nameDefaultValue,
             description: descriptionDefaultValue,
+            active: isFirstCompany,
         },
     });
 
     const handleSubmit = form.handleSubmit(async (values) => {
-        onSubmit(values);
+        const { active, ...rest } = values;
+        onSubmit(rest);
         form.reset();
     });
 
@@ -101,6 +118,24 @@ export const CompanyDialogForm = ({
                         );
                     }}
                 />
+                {showActiveCheckbox && (
+                    <Controller
+                        control={form.control}
+                        name='active'
+                        render={({ field: { value, onChange, ...field } }) => (
+                            <div className='flex items-center space-x-2 mt-4'>
+                                <Checkbox
+                                    id='active'
+                                    checked={value}
+                                    onCheckedChange={onChange}
+                                    disabled={isFirstCompany}
+                                    {...field}
+                                />
+                                <Label htmlFor='active'>{t('setAsActive')}</Label>
+                            </div>
+                        )}
+                    />
+                )}
             </form>
             <Button
                 form={CREATE_COMPANY_FORM_ID}

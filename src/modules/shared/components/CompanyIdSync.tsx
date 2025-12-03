@@ -2,21 +2,20 @@
 
 import { useEffect } from 'react';
 
-import { ACTIVE_COMPANY_ID_KEY } from '@/modules/companies/constants';
-import { useLocalStorage } from '@/modules/shared/hooks';
+import { useActiveCompany } from '@/modules/companies/contexts';
 
 interface CompanyIdSyncProps {
     companyId: string;
 }
 
 export function CompanyIdSync({ companyId }: CompanyIdSyncProps) {
-    const [, setActiveCompanyId] = useLocalStorage(ACTIVE_COMPANY_ID_KEY, '');
+    const { setActiveCompany } = useActiveCompany();
 
     useEffect(() => {
         if (companyId) {
-            setActiveCompanyId(companyId);
+            setActiveCompany(companyId, '');
         }
-    }, [companyId, setActiveCompanyId]);
+    }, [companyId, setActiveCompany]);
 
     return null;
 }

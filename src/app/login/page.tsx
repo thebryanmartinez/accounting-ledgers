@@ -1,7 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { LoginForm, RegisterForm } from "@/modules/authentication/components";
+import {
+  LoginForm,
+  RegisterForm,
+  AuthenticationLanguageDropdown,
+} from "@/modules/authentication/components";
 import {
   Tabs,
   TabsContent,
@@ -18,19 +22,24 @@ export default function LoginPage() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex h-screen items-center justify-center">
-        <Tabs defaultValue="login" className="w-[400px]">
-          <TabsList>
-            <TabsTrigger value="login">{t("login")}</TabsTrigger>
-            <TabsTrigger value="register">{t("register")}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="login">
-            <LoginForm login={login} />
-          </TabsContent>
-          <TabsContent value="register">
-            <RegisterForm register={register} />
-          </TabsContent>
-        </Tabs>
+      <div className="min-h-screen flex flex-col">
+        <div className="flex justify-end p-4">
+          <AuthenticationLanguageDropdown />
+        </div>
+        <div className="flex flex-1 items-center justify-center px-4">
+          <Tabs defaultValue="login" className="w-full max-w-md">
+            <TabsList>
+              <TabsTrigger value="login">{t("login")}</TabsTrigger>
+              <TabsTrigger value="register">{t("register")}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="login">
+              <LoginForm login={login} />
+            </TabsContent>
+            <TabsContent value="register">
+              <RegisterForm register={register} />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </QueryClientProvider>
   );

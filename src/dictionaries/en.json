@@ -19,7 +19,10 @@
         "passwordRequired": "Password is required",
         "passwordMinLength": "Password must be at least 6 characters long",
         "nameRequired": "Name is required",
-        "nameMinLength": "Name must be at least 2 characters long"
+        "nameMinLength": "Name must be at least 2 characters long",
+        "language": "Language",
+        "english": "English",
+        "spanish": "Spanish"
     },
     "accounts": {
         "idRequired": "ID is required",

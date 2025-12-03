@@ -19,7 +19,10 @@
         "passwordRequired": "La contraseña es obligatoria",
         "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
         "nameRequired": "El nombre es obligatorio",
-        "nameMinLength": "El nombre debe tener al menos 2 caracteres"
+        "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+        "language": "Idioma",
+        "english": "Inglés",
+        "spanish": "Español"
     },
     "accounts": {
         "idRequired": "El ID es obligatorio",

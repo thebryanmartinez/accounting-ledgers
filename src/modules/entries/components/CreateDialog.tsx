@@ -2,11 +2,17 @@
 
 import { useState } from 'react';
 
+
+
 import { useTranslations } from 'next-intl';
+
+
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
+
+
 
 import { getAllAccountsForHierarchy } from '@/modules/accounts/api';
 import { ACCOUNTS_QUERY_KEYS } from '@/modules/accounts/constants';
@@ -16,6 +22,27 @@ import { createEntry } from '@/modules/entries/api';
 import { EntryFormDialog, FormSchema } from '@/modules/entries/components/FormDialog';
 import { ENTRIES_QUERY_KEYS } from '@/modules/entries/constants';
 import { Button, Dialog, DialogTrigger } from '@/modules/shared/components';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const CreateEntryDialog = () => {
     const t = useTranslations('entries');
@@ -33,7 +60,10 @@ export const CreateEntryDialog = () => {
         mutationFn: createEntry,
         mutationKey: [ENTRIES_QUERY_KEYS.POST],
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET, SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ENTRIES] });
+            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET] });
+            queryClient.invalidateQueries({
+                queryKey: [SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ENTRIES],
+            });
             setOpen(false);
             toast.success(t('entryCreatedSuccess'));
         },

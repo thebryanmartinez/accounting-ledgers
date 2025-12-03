@@ -39,7 +39,10 @@ export const DeleteEntryDialog = ({ isOpen, setIsOpen, entry }: DeleteEntryDialo
         mutationFn: deleteEntry,
         mutationKey: [ENTRIES_QUERY_KEYS.DELETE],
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET, SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ENTRIES] });
+            queryClient.invalidateQueries({ queryKey: [ENTRIES_QUERY_KEYS.GET] });
+            queryClient.invalidateQueries({
+                queryKey: [SIDEBAR_QUERY_KEYS.VALIDATION, SIDEBAR_QUERY_KEYS.HAS_ENTRIES],
+            });
             setIsOpen(false);
             toast.success(t('entryDeletedSuccess'));
         },
@@ -59,9 +62,7 @@ export const DeleteEntryDialog = ({ isOpen, setIsOpen, entry }: DeleteEntryDialo
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{t('deleteEntry')}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        {t('deleteEntryConfirmation')}
-                    </AlertDialogDescription>
+                    <AlertDialogDescription>{t('deleteEntryConfirmation')}</AlertDialogDescription>
                     <div className='mt-3 rounded-md border bg-muted/50 p-3'>
                         <dl className='space-y-2 text-sm'>
                             <div className='flex justify-between'>

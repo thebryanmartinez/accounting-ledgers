@@ -4,10 +4,10 @@ import { ReactNode } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { CompanyProvider } from '@/modules/companies/contexts';
 import { DashboardSidebar } from '@/modules/dashboard/components/DashboardSidebar';
 import { AuthGuard } from '@/modules/shared/components';
 import { SidebarProvider, SidebarTrigger } from '@/modules/shared/components/sidebar';
-import { CompanyProvider } from '@/modules/companies/contexts';
 
 export default function Layout({ children }: { children: ReactNode }) {
     const queryClient = new QueryClient();
@@ -18,9 +18,9 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <CompanyProvider>
                     <SidebarProvider>
                         <DashboardSidebar />
-                        <main className='flex-1 h-full'>
-                            <SidebarTrigger />
-                            <div className='px-8 py-4 h-full'>{children}</div>
+                        <SidebarTrigger />
+                        <main className='h-dvh w-full'>
+                            <div className='px-8 py-4 flex flex-col h-full'>{children}</div>
                         </main>
                     </SidebarProvider>
                 </CompanyProvider>

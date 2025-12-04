@@ -14,6 +14,10 @@ import {
 } from 'lucide-react';
 
 import { useActiveCompany } from '@/modules/companies/contexts';
+import { SettingsDropdown } from '@/modules/dashboard/components/SettingsDropdown';
+import { SidebarLinkWithTooltip } from '@/modules/dashboard/components/SidebarLinkWithTooltip';
+import { useSidebarValidation } from '@/modules/dashboard/hooks/useSidebarValidation';
+import { SidebarGroupConfig } from '@/modules/dashboard/models/sidebar.model';
 import {
     Sidebar,
     SidebarContent,
@@ -25,10 +29,6 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from '@/modules/shared/components/sidebar';
-import { SettingsDropdown } from '@/modules/dashboard/components/SettingsDropdown';
-import { SidebarLinkWithTooltip } from '@/modules/dashboard/components/SidebarLinkWithTooltip';
-import { useSidebarValidation } from '@/modules/dashboard/hooks/useSidebarValidation';
-import { SidebarGroupConfig } from '@/modules/dashboard/models/sidebar.model';
 
 const SidebarGroups = ({ label, links }: SidebarGroupConfig) => {
     return (
@@ -104,7 +104,7 @@ export function DashboardSidebar() {
         () => [
             {
                 title: t('dashboard.generalJournal'),
-                url: `/dashboard/${activeCompanyId}/general-journal`,
+                url: `/dashboard/${activeCompanyId}/journals`,
                 icon: BookOpen,
                 disabled: !permissions.canViewLedgers,
                 tooltipContent: !permissions.canViewLedgers
@@ -117,7 +117,7 @@ export function DashboardSidebar() {
             },
             {
                 title: t('dashboard.generalLedger'),
-                url: `/dashboard/${activeCompanyId}/general-ledger`,
+                url: `/dashboard/${activeCompanyId}/ledgers`,
                 icon: BookOpenTextIcon,
                 disabled: !permissions.canViewLedgers,
                 tooltipContent: !permissions.canViewLedgers

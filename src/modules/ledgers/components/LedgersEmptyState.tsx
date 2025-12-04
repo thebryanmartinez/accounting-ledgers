@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Receipt } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 import {
     Empty,
@@ -12,17 +12,17 @@ import {
     EmptyTitle,
 } from '@/modules/shared/components';
 
-export const EntriesEmptyState = () => {
-    const t = useTranslations('entries');
+export const LedgersEmptyState = () => {
+    const t = useTranslations('ledgers');
 
     return (
         <Empty>
             <EmptyMedia>
-                <Receipt className='size-12 text-muted-foreground' />
+                <BookOpen className='size-12 text-muted-foreground' />
             </EmptyMedia>
             <EmptyHeader>
-                <EmptyTitle>{t('noEntriesFound')}</EmptyTitle>
-                <EmptyDescription>{t('noEntriesDescription')}</EmptyDescription>
+                <EmptyTitle>{t('noLedgersFound')}</EmptyTitle>
+                <EmptyDescription>{t('noLedgersDescription')}</EmptyDescription>
             </EmptyHeader>
         </Empty>
     );

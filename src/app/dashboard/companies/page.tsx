@@ -3,12 +3,20 @@
 import { useTranslations } from 'next-intl';
 
 import { useQuery } from '@tanstack/react-query';
+import { Building2 } from 'lucide-react';
 
 import { getCompanies } from '@/modules/companies/api';
 import { CompanyCard, CreateCompanyDialog, SkeletonCard } from '@/modules/companies/components';
 import { COMPANIES_QUERY_KEYS } from '@/modules/companies/constants';
 import { useActiveCompany } from '@/modules/companies/contexts';
-import { PageHeader } from '@/modules/shared/components';
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+    PageHeader,
+} from '@/modules/shared/components';
 import {
     GARBAGE_COLLECTION_TIME_INTERVAL,
     REFETCH_ON_MOUNT_BOOLEAN,
@@ -31,7 +39,7 @@ export default function Companies() {
     const { activeCompanyId, setActiveCompany } = useActiveCompany();
 
     return (
-        <section className='space-y-6'>
+        <section className='space-y-6 h-full flex flex-col'>
             <PageHeader title={t('companiesTitle')} description={t('companiesDescription')}>
                 <CreateCompanyDialog hasCompanies={companies ? companies.total > 0 : false} />
             </PageHeader>
@@ -43,8 +51,15 @@ export default function Companies() {
                 </article>
             ) : companies?.total === 0 ? (
                 <div className='flex h-full col-span-full w-full flex-col items-center justify-center'>
-                    <h2 className='text-2xl font-bold'>{t('noCompaniesFound')}</h2>
-                    <p className='text-muted'>{t('createCompanyToGetStarted')}</p>
+                    <Empty>
+                        <EmptyMedia>
+                            <Building2 className='size-12 text-muted-foreground' />
+                        </EmptyMedia>
+                        <EmptyHeader>
+                            <EmptyTitle>{t('noCompaniesFound')}</EmptyTitle>
+                            <EmptyDescription>{t('createCompanyToGetStarted')}</EmptyDescription>
+                        </EmptyHeader>
+                    </Empty>
                 </div>
             ) : (
                 <article className='grid lg:grid-cols-2 grid-cols-1 2xl:grid-cols-3 gap-4'>

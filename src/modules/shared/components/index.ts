@@ -1,6 +1,6 @@
 export * from './AuthGuard';
 export * from './CompanyIdSync';
-export * from './LocaleProvider'
+export * from './LocaleProvider';
 export * from './PageHeader';
 export * from './ThemeToggle';
 export * from './alert';
@@ -31,3 +31,4 @@ export * from './tabs';
 export * from './textarea';
 export * from './theme-provider';
 export * from './tooltip';
+export * from './empty';

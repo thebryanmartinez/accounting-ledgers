@@ -11,7 +11,7 @@ interface PageHeaderProps {
 
 export const PageHeader = ({ title, description, children }: PageHeaderProps) => {
     return (
-        <Item>
+        <Item className='flex-0'>
             <ItemContent>
                 <ItemTitle className='text-2xl font-bold tracking-tight'>{title}</ItemTitle>
                 <ItemDescription className='text-muted-foreground'>{description}</ItemDescription>

@@ -8,12 +8,14 @@ export default async function AccountsPage({ params }: CompanyIdPageProps) {
     const t = await getTranslations('accounts');
 
     return (
-        <section className='space-y-6'>
+        <section className='space-y-6 h-full flex flex-col '>
             <CompanyIdSync companyId={params.companyId} />
             <PageHeader title={t('accountsTitle')} description={t('accountsDescription')}>
                 <CreateAccountDialog />
             </PageHeader>
-            <AccountsTable />
+            <article className='flex flex-1 flex-col'>
+                <AccountsTable />
+            </article>
         </section>
     );
 }

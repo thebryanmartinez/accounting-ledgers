@@ -46,9 +46,7 @@ export default async function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <LocaleProvider>
-                        {children}
-                    </LocaleProvider>
+                    <LocaleProvider>{children}</LocaleProvider>
                     <Toaster />
                 </ThemeProvider>
             </body>

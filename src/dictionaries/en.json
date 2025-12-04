@@ -167,7 +167,10 @@
         "tableHeaderCredit": "Credit",
         "tableHeaderActions": "Actions"
     },
-    "ledgers": {},
+    "ledgers": {
+        "ledgers": "Ledgers",
+        "ledgerDescription": "Ledgers are used to track transactions over a period of time from single accounts."
+    },
     "dashboard": {
         "companies": "Companies",
         "ledgers": "Ledgers",

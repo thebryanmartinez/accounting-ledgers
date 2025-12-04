@@ -167,6 +167,10 @@
         "tableHeaderCredit": "Crédito",
         "tableHeaderActions": "Acciones"
     },
+    "ledgers": {
+        "ledgers": "Libros mayores",
+        "ledgersDescription": "Los libros de contabilidad se utilizan para rastrear transacciones durante un período de tiempo desde cuentas individuales."
+    },
     "dashboard": {
         "companies": "Empresas",
         "ledgers": "Libros",

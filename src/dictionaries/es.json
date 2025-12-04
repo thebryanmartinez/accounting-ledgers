@@ -169,7 +169,14 @@
     },
     "ledgers": {
         "ledgers": "Libros mayores",
-        "ledgersDescription": "Los libros de contabilidad se utilizan para rastrear transacciones durante un período de tiempo desde cuentas individuales."
+        "ledgersDescription": "Los libros de contabilidad se utilizan para rastrear transacciones durante un período de tiempo desde cuentas individuales.",
+        "create": "Crear",
+        "currentBalance": "Saldo Actual",
+        "totalDebits": "Débitos Totales",
+        "totalCredits": "Créditos Totales",
+        "createdOn": "Creado el",
+        "noLedgersFound": "Aún no hay libros mayores",
+        "noLedgersDescription": "Crea tu primer libro mayor para comenzar a rastrear transacciones de cuentas."
     },
     "dashboard": {
         "companies": "Empresas",

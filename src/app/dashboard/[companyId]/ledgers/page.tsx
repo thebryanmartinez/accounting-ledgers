@@ -2,18 +2,21 @@
 
 import { useTranslations } from 'next-intl';
 
+import { CreateLedgerDialog, LedgersList } from '@/modules/ledgers/components';
 import { PageHeader } from '@/modules/shared/components';
 
 export default function LedgersPage() {
     const t = useTranslations('ledgers');
 
     return (
-        <section className='space-y-6'>
+        <section className='space-y-6 h-full flex flex-col'>
             <PageHeader title={t('ledgers')} description={t('ledgersDescription')}>
-                {/* Add actions or content here */}
+                <CreateLedgerDialog />
             </PageHeader>
 
-            <div className='flex h-full col-span-full w-full flex-col items-center justify-center'></div>
+            <article className='flex flex-1 flex-col'>
+                <LedgersList />
+            </article>
         </section>
     );
 }

@@ -13,11 +13,11 @@ const tableProperties = {
 
 const tablesDB = new TablesDB(client);
 
-export const getLedgers = async () => {
+export const getLedgers = async (companyId: string) => {
     try {
         const response = await tablesDB.listRows({
             ...tableProperties,
-            queries: [Query.orderAsc('id')],
+            queries: [Query.equal('company_id', companyId), Query.orderAsc('account_id')],
         });
 
         return response.rows as unknown as LedgerTable[];

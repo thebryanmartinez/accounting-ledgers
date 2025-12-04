@@ -169,7 +169,14 @@
     },
     "ledgers": {
         "ledgers": "Ledgers",
-        "ledgerDescription": "Ledgers are used to track transactions over a period of time from single accounts."
+        "ledgersDescription": "Ledgers are used to track transactions over a period of time from single accounts.",
+        "create": "Create",
+        "currentBalance": "Current Balance",
+        "totalDebits": "Total Debits",
+        "totalCredits": "Total Credits",
+        "createdOn": "Created on",
+        "noLedgersFound": "No ledgers yet",
+        "noLedgersDescription": "Create your first ledger to start tracking account transactions."
     },
     "dashboard": {
         "companies": "Companies",
